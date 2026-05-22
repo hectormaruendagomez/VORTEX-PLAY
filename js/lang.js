@@ -42,6 +42,36 @@ const translations = {
         'index.subtitle': 'Plataforma web de videojuegos: noticias, rankings y comunidad',
         'index.read_more': 'Leer más →',
 
+        'index.news1.badge': '📰 Esports',
+        'index.news1.title': 'Gran evento de eSports 2026 confirma récord de participantes',
+        'index.news1.date': '21 de mayo de 2026',
+        'index.news1.category': 'Esports',
+        'index.news1.body': '5 millones en premios, más de 50 países y expectativas de superar los 100 millones de espectadores. Las clasificatorias han arrancado con una competencia histórica.',
+
+        'index.news2.badge': '🚀 Tecnología',
+        'index.news2.title': 'Nuevo motor gráfico revolucionario lanzado',
+        'index.news2.date': '20 de mayo de 2026',
+        'index.news2.category': 'Tecnología',
+        'index.news2.body': 'Ray-tracing en tiempo real, física predictiva y machine learning integrado. Varios estudios ya lo han adoptado y los primeros juegos llegarán antes de que acabe el año.',
+
+        'index.news3.badge': '📊 Tendencias',
+        'index.news3.title': 'Tendencias en gaming 2026: Cloud y comunidad lideran',
+        'index.news3.date': '19 de mayo de 2026',
+        'index.news3.category': 'Tendencias',
+        'index.news3.body': 'Cloud gaming, realidad aumentada y comunidades integradas. El 70% de los jugadores usarán servicios en la nube de aquí a 2027, según los analistas del sector.',
+
+        'index.news4.badge': '☁️ Plataformas',
+        'index.news4.title': 'Lanzamiento plataforma cloud gaming revoluciona el sector',
+        'index.news4.date': '18 de mayo de 2026',
+        'index.news4.category': 'Plataformas',
+        'index.news4.body': 'Más de 500 títulos desde el primer día, latencia por debajo de 10ms y soporte para cualquier dispositivo. La propuesta más seria vista en cloud gaming hasta la fecha.',
+
+        'index.news5.badge': '🎥 Streaming',
+        'index.news5.title': 'Colectivo de streamers rompe récord histórico de audiencia',
+        'index.news5.date': '17 de mayo de 2026',
+        'index.news5.category': 'Streaming',
+        'index.news5.body': '50 millones de espectadores simultáneos sin ninguna promoción previa, solo boca a boca en redes durante 48 horas. Un fenómeno que nadie en el sector vio venir.',
+
         // ── News sidebar ─────────────────────────────────────────────
         'news.sidebar.categories': 'Categorías',
         'news.sidebar.trending': 'Tendencias',
@@ -260,6 +290,75 @@ const translations = {
         'news.status.pending': 'Pendiente',
         'news.action.publish': 'Publicar',
         'news.action.delete': 'Eliminar',
+
+        // ── News / Games empty states ─────────────────────────────────
+        'news.empty.title': 'No se encontraron noticias',
+        'news.empty.hint': 'Prueba con otra categoría.',
+        'games.empty.title': 'No se encontraron juegos',
+        'games.empty.hint': 'Cambia los filtros o el término de búsqueda.',
+
+        // ── Games card labels ─────────────────────────────────────────
+        'games.label.press': 'Prensa',
+        'games.label.community': 'Comunidad',
+        'games.label.favorite': 'Favorito',
+        'games.login_fav': 'Inicia sesión para guardar favoritos.',
+
+        // ── Auth validation errors ────────────────────────────────────
+        'auth.error.email_required': 'El email es obligatorio.',
+        'auth.error.email_invalid': 'Introduce un email válido.',
+        'auth.error.email_invalid_ex': 'Introduce un email válido (ej: usuario@dominio.com).',
+        'auth.error.email_taken': 'Este email ya está registrado.',
+        'auth.error.password_required': 'La contraseña es obligatoria.',
+        'auth.error.password_min': 'La contraseña debe tener al menos 8 caracteres.',
+        'auth.error.passwords_mismatch': 'Las contraseñas no coinciden.',
+        'auth.error.password_weak': 'Contraseña débil: mínimo 8 caracteres.',
+        'auth.error.password_medium': 'Contraseña aceptable. Añade números o símbolos para reforzarla.',
+        'auth.error.password_strong': 'Contraseña fuerte.',
+        'auth.error.name_short': 'El nombre debe tener al menos 2 caracteres.',
+        'auth.error.credentials': 'Email o contraseña incorrectos.',
+        'auth.error.credentials_hint': 'Verifica tus credenciales e inténtalo de nuevo.',
+        'auth.error.reg_disabled': 'El registro está desactivado temporalmente. Contacta con el administrador.',
+        'auth.success.welcome': 'Bienvenido',
+        'auth.success.register': 'Cuenta creada correctamente. Ya puedes iniciar sesión.',
+
+        // ── Agenda date format ────────────────────────────────────────
+        'agenda.date.of': 'de',
+
+        // ── Dashboard dynamic strings ─────────────────────────────────
+        'dash.error.access_denied': 'Acceso denegado. Inicia sesión primero.',
+        'dash.favorites.removed': 'Juego eliminado de favoritos.',
+        'dash.comments.confirm_delete': '¿Eliminar este comentario?',
+        'dash.comments.deleted': 'Comentario eliminado.',
+        'dash.news.confirm_delete': '¿Eliminar esta noticia?',
+        'dash.news.action_published': 'publicada',
+        'dash.news.deleted': 'Noticia eliminada.',
+        'dash.users.confirm_delete': '¿Eliminar la cuenta de',
+        'dash.users.role_updated': 'Rol actualizado.',
+        'dash.users.deleted': 'Usuario eliminado.',
+        'dash.settings.saved': 'Configuración guardada.',
+        'dash.profile.name_required': 'El nombre es obligatorio.',
+        'dash.profile.saved': 'Perfil actualizado.',
+        'dash.news_create.required_fields': 'Rellena el título, copete y contenido.',
+        'dash.news_create.sent_for_review': 'Borrador enviado a revisión.',
+        'dash.news_create.saved_draft': 'Guardado como borrador.',
+
+        // ── Blog dynamic strings ──────────────────────────────────────
+        'comment.just_now': 'hace un momento',
+        'comment.reply_wip': 'Sistema de respuestas en desarrollo.',
+        'blog.author_posts': 'Posts del autor:',
+        'blog.likes_label': 'Me gusta',
+
+        // ── Contact form validation ───────────────────────────────────
+        'contact.error.field_required': 'Este campo es obligatorio.',
+        'contact.error.subject_short': 'El asunto debe tener al menos 5 caracteres.',
+        'contact.error.message_short': 'El mensaje debe tener al menos 20 caracteres',
+        'contact.error.message_remaining': 'faltan',
+        'contact.error.terms_required': 'Debes aceptar la política de privacidad.',
+        'contact.sending': 'Enviando...',
+        'contact.char_counter_init': '0 / mínimo 20 caracteres',
+        'contact.char_counter': 'caracteres',
+        'contact.error.min_chars_prefix': 'Mínimo',
+        'nav.logout_confirm': '¿Cerrar sesión?',
     },
     en: {
         // ── Navigation ──────────────────────────────────────────────
@@ -303,6 +402,36 @@ const translations = {
         // ── Index ────────────────────────────────────────────────────
         'index.subtitle': 'Gaming platform: news, rankings and community',
         'index.read_more': 'Read more →',
+
+        'index.news1.badge': '📰 Esports',
+        'index.news1.title': 'Major 2026 eSports event confirms record attendance',
+        'index.news1.date': 'May 21, 2026',
+        'index.news1.category': 'Esports',
+        'index.news1.body': '5 million in prizes, over 50 countries and expectations of surpassing 100 million viewers. Qualifiers have kicked off with historic competition.',
+
+        'index.news2.badge': '🚀 Technology',
+        'index.news2.title': 'New revolutionary graphics engine launched',
+        'index.news2.date': 'May 20, 2026',
+        'index.news2.category': 'Technology',
+        'index.news2.body': 'Real-time ray tracing, predictive physics and integrated machine learning. Several studios have already adopted it and the first games will arrive before the end of the year.',
+
+        'index.news3.badge': '📊 Trends',
+        'index.news3.title': 'Gaming trends 2026: Cloud and community lead',
+        'index.news3.date': 'May 19, 2026',
+        'index.news3.category': 'Trends',
+        'index.news3.body': 'Cloud gaming, augmented reality and integrated communities. Analysts say 70% of players will use cloud services by 2027.',
+
+        'index.news4.badge': '☁️ Platforms',
+        'index.news4.title': 'Cloud gaming platform launch revolutionizes the sector',
+        'index.news4.date': 'May 18, 2026',
+        'index.news4.category': 'Platforms',
+        'index.news4.body': 'More than 500 titles available from day one, latency below 10ms and support for any device. The most serious cloud gaming offering seen so far.',
+
+        'index.news5.badge': '🎥 Streaming',
+        'index.news5.title': 'Streamer collective breaks historic audience record',
+        'index.news5.date': 'May 17, 2026',
+        'index.news5.category': 'Streaming',
+        'index.news5.body': '50 million simultaneous viewers with no prior promotion, only word of mouth on social media for 48 hours. A phenomenon the industry did not see coming.',
 
         // ── News sidebar ─────────────────────────────────────────────
         'news.sidebar.categories': 'Categories',
@@ -522,6 +651,75 @@ const translations = {
         'news.status.pending': 'Pending',
         'news.action.publish': 'Publish',
         'news.action.delete': 'Delete',
+
+        // ── News / Games empty states ─────────────────────────────────
+        'news.empty.title': 'No news found',
+        'news.empty.hint': 'Try another category.',
+        'games.empty.title': 'No games found',
+        'games.empty.hint': 'Change the filters or search term.',
+
+        // ── Games card labels ─────────────────────────────────────────
+        'games.label.press': 'Press',
+        'games.label.community': 'Community',
+        'games.label.favorite': 'Favorite',
+        'games.login_fav': 'Sign in to save favorites.',
+
+        // ── Auth validation errors ────────────────────────────────────
+        'auth.error.email_required': 'Email is required.',
+        'auth.error.email_invalid': 'Enter a valid email.',
+        'auth.error.email_invalid_ex': 'Enter a valid email (e.g.: user@domain.com).',
+        'auth.error.email_taken': 'This email is already registered.',
+        'auth.error.password_required': 'Password is required.',
+        'auth.error.password_min': 'Password must be at least 8 characters.',
+        'auth.error.passwords_mismatch': 'Passwords do not match.',
+        'auth.error.password_weak': 'Weak password: minimum 8 characters.',
+        'auth.error.password_medium': 'Acceptable password. Add numbers or symbols to strengthen it.',
+        'auth.error.password_strong': 'Strong password.',
+        'auth.error.name_short': 'Name must be at least 2 characters.',
+        'auth.error.credentials': 'Incorrect email or password.',
+        'auth.error.credentials_hint': 'Check your credentials and try again.',
+        'auth.error.reg_disabled': 'Registration is temporarily disabled. Contact the administrator.',
+        'auth.success.welcome': 'Welcome',
+        'auth.success.register': 'Account created successfully. You can now sign in.',
+
+        // ── Agenda date format ────────────────────────────────────────
+        'agenda.date.of': 'of',
+
+        // ── Dashboard dynamic strings ─────────────────────────────────
+        'dash.error.access_denied': 'Access denied. Please sign in first.',
+        'dash.favorites.removed': 'Game removed from favorites.',
+        'dash.comments.confirm_delete': 'Delete this comment?',
+        'dash.comments.deleted': 'Comment deleted.',
+        'dash.news.confirm_delete': 'Delete this article?',
+        'dash.news.action_published': 'published',
+        'dash.news.deleted': 'Article deleted.',
+        'dash.users.confirm_delete': 'Delete account for',
+        'dash.users.role_updated': 'Role updated.',
+        'dash.users.deleted': 'User deleted.',
+        'dash.settings.saved': 'Settings saved.',
+        'dash.profile.name_required': 'Name is required.',
+        'dash.profile.saved': 'Profile updated.',
+        'dash.news_create.required_fields': 'Fill in the title, excerpt and content.',
+        'dash.news_create.sent_for_review': 'Draft submitted for review.',
+        'dash.news_create.saved_draft': 'Saved as draft.',
+
+        // ── Blog dynamic strings ──────────────────────────────────────
+        'comment.just_now': 'just now',
+        'comment.reply_wip': 'Reply system coming soon.',
+        'blog.author_posts': 'Author posts:',
+        'blog.likes_label': 'Likes',
+
+        // ── Contact form validation ───────────────────────────────────
+        'contact.error.field_required': 'This field is required.',
+        'contact.error.subject_short': 'Subject must be at least 5 characters.',
+        'contact.error.message_short': 'Message must be at least 20 characters',
+        'contact.error.message_remaining': 'remaining',
+        'contact.error.terms_required': 'You must accept the privacy policy.',
+        'contact.sending': 'Sending...',
+        'contact.char_counter_init': '0 / minimum 20 characters',
+        'contact.char_counter': 'characters',
+        'contact.error.min_chars_prefix': 'Minimum',
+        'nav.logout_confirm': 'Sign out?',
     }
 };
 

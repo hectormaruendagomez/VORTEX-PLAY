@@ -222,11 +222,11 @@ function injectNavbar() {
                 <span class="user-avatar-badge">${user.avatar}</span>
                 <span class="user-name">${user.name.split(' ')[0]} <small>(${getRoleDisplayName(user.role)})</small></span>
                 <a href="dashboard.html" class="navbar-link ${pageName === 'dashboard.html' ? 'active' : ''}">Dashboard</a>
-                <button id="logoutBtn" class="btn-logout-nav">Salir</button>
+                <button id="logoutBtn" class="btn-logout-nav" data-i18n="nav.logout">${t('nav.logout')}</button>
             </div>
         `;
     } else {
-        authAreaHtml = `<a href="auth.html" class="btn-login-nav">Acceder</a>`;
+        authAreaHtml = `<a href="auth.html" class="btn-login-nav" data-i18n="nav.login">${t('nav.login')}</a>`;
     }
 
     navElement.innerHTML = `
@@ -251,7 +251,7 @@ function injectNavbar() {
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
-            if (confirm('¿Cerrar sesión?')) {
+            if (confirm(t('nav.logout_confirm'))) {
                 localStorage.removeItem('currentUser');
                 window.location.href = 'index.html';
             }

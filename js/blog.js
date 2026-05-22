@@ -21,7 +21,7 @@ function renderBlogComments(article, blogId) {
     listEl.innerHTML = '';
 
     if (comments.length === 0) {
-        listEl.innerHTML = `<p style="color: #7f8c8d; text-align: center; padding: 20px;">Sin comentarios todavía. ¡Sé el primero!</p>`;
+        listEl.innerHTML = `<p style="color: #7f8c8d; text-align: center; padding: 20px;">${t('comment.empty')}</p>`;
         return;
     }
 
@@ -41,7 +41,7 @@ function renderBlogComments(article, blogId) {
             <p class="comment-text">${c.text}</p>
             <div class="comment-actions">
                 <button class="btn-like" data-blog-id="${blogId}" data-index="${index}">❤️ <span>${c.likes || 0}</span></button>
-                <button class="btn-reply">Responder</button>
+                <button class="btn-reply">${t('comment.reply')}</button>
             </div>
         `;
         listEl.appendChild(div);
@@ -50,7 +50,7 @@ function renderBlogComments(article, blogId) {
     listEl.querySelectorAll('.btn-like').forEach(btn => {
         btn.addEventListener('click', function() {
             if (!getCurrentUser()) {
-                alert('Inicia sesión para reaccionar.');
+                alert(t('comment.login_react'));
                 return;
             }
             addBlogLike(blogId, parseInt(this.getAttribute('data-index')));
@@ -61,10 +61,10 @@ function renderBlogComments(article, blogId) {
     listEl.querySelectorAll('.btn-reply').forEach(btn => {
         btn.addEventListener('click', function() {
             if (!getCurrentUser()) {
-                alert('Inicia sesión para responder.');
+                alert(t('comment.login_reply'));
                 return;
             }
-            alert('Sistema de respuestas en desarrollo.');
+            alert(t('comment.reply_wip'));
         });
     });
 }
@@ -86,7 +86,7 @@ function setupBlogCommentForm(article, blogId) {
     if (!settings.allowComments) {
         container.innerHTML = `
             <div class="comment-form" style="text-align:center; padding:16px; border:1px solid rgba(231,76,60,0.3); background:rgba(231,76,60,0.05); border-radius:8px; margin-bottom:20px;">
-                <p style="color:#e74c3c; font-weight:600; margin:0;">Los comentarios están desactivados temporalmente.</p>
+                <p style="color:#e74c3c; font-weight:600; margin:0;">${t('comment.disabled')}</p>
             </div>
         `;
         return;
@@ -96,7 +96,7 @@ function setupBlogCommentForm(article, blogId) {
     if (!user) {
         container.innerHTML = `
             <div class="comment-form" style="text-align:center; padding:16px; border:1px solid rgba(0,212,255,0.2); background:rgba(0,212,255,0.03); border-radius:8px; margin-bottom:20px;">
-                <p class="login-hint" style="margin:0;">Para comentar, <a href="auth.html">inicia sesión</a>.</p>
+                <p class="login-hint" style="margin:0;" data-i18n-html="comment.login_hint">${t('comment.login_hint') || ''}</p>
             </div>
         `;
         return;
@@ -104,10 +104,10 @@ function setupBlogCommentForm(article, blogId) {
 
     container.innerHTML = `
         <form class="comment-form" style="margin-bottom:20px;">
-            <textarea class="comment-input" placeholder="Escribe un comentario..." required style="resize:vertical;"></textarea>
+            <textarea class="comment-input" placeholder="${t('comment.placeholder')}" required style="resize:vertical;"></textarea>
             <div class="comment-form-footer">
-                <span style="font-size:0.85rem; color:#7f8c8d;">Comentando como <strong style="color:#00d4ff;">${user.name}</strong></span>
-                <button type="submit" class="btn-comment">Publicar</button>
+                <span style="font-size:0.85rem; color:#7f8c8d;">${t('comment.as')} <strong style="color:#00d4ff;">${user.name}</strong></span>
+                <button type="submit" class="btn-comment">${t('comment.submit')}</button>
             </div>
         </form>
     `;
@@ -119,7 +119,7 @@ function setupBlogCommentForm(article, blogId) {
 
         if (!text) return;
         if (text.length < 5) {
-            alert('El comentario debe tener al menos 5 caracteres.');
+            alert(t('comment.min_chars'));
             return;
         }
 
@@ -130,7 +130,7 @@ function setupBlogCommentForm(article, blogId) {
             author: user.name,
             role: user.role,
             email: user.email,
-            date: 'hace un momento',
+            date: t('comment.just_now'),
             text,
             likes: 0
         });
@@ -158,7 +158,7 @@ function setupAuthorLinks() {
             const name = this.querySelector('h4').textContent;
             const target = document.querySelector(`.post-author`);
             if (target) target.scrollIntoView({ behavior: 'smooth' });
-            alert(`Posts del autor: ${name}`);
+            alert(`${t('blog.author_posts')} ${name}`);
         });
     });
 }
@@ -168,12 +168,12 @@ function setupLikeButtons() {
         el.style.cursor = 'pointer';
         el.addEventListener('click', function() {
             if (!getCurrentUser()) {
-                alert('Inicia sesión para reaccionar.');
+                alert(t('comment.login_react'));
                 return;
             }
             const parts = this.textContent.split(' ');
             const count = (parseInt(parts[1]) || 0) + 1;
-            this.textContent = `👍 ${count} Me gusta`;
+            this.textContent = `👍 ${count} ${t('blog.likes_label')}`;
         });
     });
 }

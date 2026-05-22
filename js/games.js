@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     initCatalog();
+    document.addEventListener('translationsApplied', renderGames);
 });
 
 let games = [];
@@ -56,8 +57,8 @@ function renderGames() {
     if (filtered.length === 0) {
         gamesGrid.innerHTML = `
             <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 40px; color: #bdc3c7;">
-                <h3>No se encontraron juegos</h3>
-                <p>Cambia los filtros o el término de búsqueda.</p>
+                <h3>${t('games.empty.title')}</h3>
+                <p>${t('games.empty.hint')}</p>
             </div>
         `;
         return;
@@ -75,12 +76,12 @@ function renderGames() {
                 <p class="game-studio">${game.studio} · ${game.year}</p>
                 <div class="game-ratings">
                     <div class="rating-item">
-                        <span class="rating-label">Prensa</span>
+                        <span class="rating-label">${t('games.label.press')}</span>
                         <div class="stars">${getStarsHTML(game.pressRating)}</div>
                         <span class="rating-score">${game.pressRating}/10</span>
                     </div>
                     <div class="rating-item">
-                        <span class="rating-label">Comunidad</span>
+                        <span class="rating-label">${t('games.label.community')}</span>
                         <div class="stars">${getStarsHTML(game.communityRating)}</div>
                         <span class="rating-score">${game.communityRating}/10</span>
                     </div>
@@ -90,7 +91,7 @@ function renderGames() {
                     ${game.tags ? game.tags.map(t => `<span class="tag">${t}</span>`).join('') : ''}
                 </div>
                 <button class="btn-favorite ${isFav ? 'active' : ''}" data-id="${game.id}">
-                    ${isFav ? '❤️ Favorito' : '🤍 Favorito'}
+                    ${isFav ? '❤️' : '🤍'} ${t('games.label.favorite')}
                 </button>
             </div>
         `;
@@ -110,7 +111,7 @@ function getStarsHTML(rating) {
 
 function toggleFavorite(gameId, buttonElement) {
     if (!currentUser) {
-        alert('Inicia sesión para guardar favoritos.');
+        alert(t('games.login_fav'));
         window.location.href = 'auth.html';
         return;
     }
@@ -122,11 +123,11 @@ function toggleFavorite(gameId, buttonElement) {
     if (idx === -1) {
         favs.push(gameId);
         buttonElement.className = 'btn-favorite active';
-        buttonElement.textContent = '❤️ Favorito';
+        buttonElement.textContent = `❤️ ${t('games.label.favorite')}`;
     } else {
         favs.splice(idx, 1);
         buttonElement.className = 'btn-favorite';
-        buttonElement.textContent = '🤍 Favorito';
+        buttonElement.textContent = `🤍 ${t('games.label.favorite')}`;
     }
 
     allFavorites[currentUser.email] = favs;

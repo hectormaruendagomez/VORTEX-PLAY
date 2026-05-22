@@ -12,7 +12,7 @@ let userFavorites = {};
 function initDashboard() {
     currentUser = getCurrentUser();
     if (!currentUser) {
-        alert('Acceso denegado. Inicia sesión primero.');
+        alert(t('dash.error.access_denied'));
         window.location.href = 'auth.html';
         return;
     }
@@ -94,13 +94,7 @@ function setupSidebarNavigation() {
 }
 
 function loadGeneralDashboard() {
-    const welcomeMessages = {
-        'subscriber': 'Bienvenido a tu área personal.',
-        'collaborator': 'Bienvenido, colaborador. Crea borradores y aporta a la comunidad.',
-        'writer': 'Bienvenido, redactor. Gestiona las noticias desde aquí.',
-        'admin': 'Panel de administración. Control total de Vortex Play.'
-    };
-    document.getElementById('roleWelcome').textContent = welcomeMessages[currentUser.role] || 'Bienvenido';
+    document.getElementById('roleWelcome').textContent = t(`dash.welcome.${currentUser.role}`) || t('auth.success.welcome');
 
     const myFavs = userFavorites[currentUser.email] || [];
     document.getElementById('statFavCount').textContent = myFavs.length;
@@ -124,27 +118,27 @@ function loadGeneralDashboard() {
     const activityList = document.getElementById('recentActivityList');
     activityList.innerHTML = '';
 
-    const activities = [{ time: 'Ahora', text: `Sesión iniciada como ${getRoleDisplayName(currentUser.role)}` }];
+    const activities = [{ time: t('dash.activity.now'), text: `${t('dash.activity.login')} ${getRoleDisplayName(currentUser.role)}` }];
 
     if (myFavs.length > 0) {
         const game = gamesData.find(g => g.id === myFavs[myFavs.length - 1]);
-        if (game) activities.push({ time: 'Reciente', text: `Marcaste como favorito "${game.title}"` });
+        if (game) activities.push({ time: t('dash.activity.recent'), text: `${t('dash.activity.fav')} "${game.title}"` });
     }
 
     let lastComment = '';
     Object.values(commentsData).forEach(postComments => {
         postComments.forEach(c => {
             if (c.author === currentUser.name) {
-                lastComment = `Comentaste: "${c.text.substring(0, 40)}..."`;
+                lastComment = `${t('dash.activity.commented')} "${c.text.substring(0, 40)}..."`;
             }
         });
     });
-    if (lastComment) activities.push({ time: 'Reciente', text: lastComment });
+    if (lastComment) activities.push({ time: t('dash.activity.recent'), text: lastComment });
 
     const myNews = newsData.filter(n => n.author === currentUser.name);
     if (myNews.length > 0) {
         const last = myNews[myNews.length - 1];
-        activities.push({ time: 'Reciente', text: `${last.status === 'published' ? 'Publicaste' : 'Borraste'} "${last.title.substring(0, 40)}..."` });
+        activities.push({ time: t('dash.activity.recent'), text: `${last.status === 'published' ? t('dash.activity.published') : t('dash.activity.drafted')} "${last.title.substring(0, 40)}..."` });
     }
 
     activities.forEach(act => {
@@ -170,8 +164,8 @@ function loadFavoritesSection() {
     if (myFavs.length === 0) {
         grid.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #7f8c8d;">
-                <p>No tienes juegos en favoritos.</p>
-                <a href="games.html" class="btn-primary" style="display: inline-block; margin-top: 15px; text-decoration: none;">Explorar Catálogo</a>
+                <p>${t('dash.favorites.empty')}</p>
+                <a href="games.html" class="btn-primary" style="display: inline-block; margin-top: 15px; text-decoration: none;">${t('dash.favorites.explore')}</a>
             </div>
         `;
         return;
@@ -187,8 +181,8 @@ function loadFavoritesSection() {
             <div class="fav-image" style="background: ${game.imageGradient || 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)'}; height: 120px; border-radius: 8px; border: 1px solid rgba(0,212,255,0.2);"></div>
             <h3 style="margin-top: 10px; font-size: 1.1rem; color: #fff;">${game.title}</h3>
             <p style="font-size: 0.85rem; color: #95a5a6;">${game.studio} · ${game.year}</p>
-            <div class="fav-rating">⭐ Prensa: ${game.pressRating}</div>
-            <button class="btn-small danger btn-remove-fav" data-id="${game.id}" style="width: 100%; margin-top: 10px; cursor: pointer;">Quitar de Favoritos</button>
+            <div class="fav-rating">⭐ ${t('dash.favorites.press')} ${game.pressRating}</div>
+            <button class="btn-small danger btn-remove-fav" data-id="${game.id}" style="width: 100%; margin-top: 10px; cursor: pointer;">${t('dash.favorites.remove')}</button>
         `;
         grid.appendChild(card);
     });
@@ -205,7 +199,7 @@ function removeFavorite(gameId) {
     saveDataToStorage();
     loadFavoritesSection();
     loadGeneralDashboard();
-    alert('Juego eliminado de favoritos.');
+    alert(t('dash.favorites.removed'));
 }
 
 function loadCommentsSection() {
@@ -222,14 +216,14 @@ function loadCommentsSection() {
     });
 
     if (userComments.length === 0) {
-        list.innerHTML = `<p style="color: #7f8c8d; text-align: center; padding: 20px;">No has publicado ningún comentario todavía.</p>`;
+        list.innerHTML = `<p style="color: #7f8c8d; text-align: center; padding: 20px;">${t('dash.comments.empty')}</p>`;
         return;
     }
 
     userComments.forEach(c => {
         let sourceName = c.postId.startsWith('blog_')
-            ? 'Artículo de Blog'
-            : `Noticia: "${(newsData.find(n => n.id == c.postId) || {}).title || c.postId}"`;
+            ? t('dash.comments.blog_source')
+            : `${t('news.sidebar.redaction')}: "${(newsData.find(n => n.id == c.postId) || {}).title || c.postId}"`;
 
         const div = document.createElement('div');
         div.className = 'comment';
@@ -241,8 +235,8 @@ function loadCommentsSection() {
             </div>
             <p style="color: #bdc3c7; font-size: 0.95rem; line-height: 1.5; margin-bottom: 10px;">"${c.text}"</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 0.8rem; color: #95a5a6;">❤️ ${c.likes || 0} reacciones</span>
-                <button class="btn-small danger btn-delete-comment" data-postid="${c.postId}" data-index="${c.index}">Eliminar</button>
+                <span style="font-size: 0.8rem; color: #95a5a6;">❤️ ${c.likes || 0} ${t('dash.comments.reactions')}</span>
+                <button class="btn-small danger btn-delete-comment" data-postid="${c.postId}" data-index="${c.index}">${t('dash.comments.delete')}</button>
             </div>
         `;
         list.appendChild(div);
@@ -250,7 +244,7 @@ function loadCommentsSection() {
 
     list.querySelectorAll('.btn-delete-comment').forEach(btn => {
         btn.addEventListener('click', function() {
-            if (confirm('¿Eliminar este comentario?')) {
+            if (confirm(t('dash.comments.confirm_delete'))) {
                 deleteComment(this.getAttribute('data-postid'), parseInt(this.getAttribute('data-index')));
             }
         });
@@ -263,7 +257,7 @@ function deleteComment(postId, index) {
         saveDataToStorage();
         loadCommentsSection();
         loadGeneralDashboard();
-        alert('Comentario eliminado.');
+        alert(t('dash.comments.deleted'));
     }
 }
 
@@ -273,12 +267,12 @@ function loadNewsCreateSection() {
     const btnDraft = document.getElementById('btnSaveDraft');
 
     if (currentUser.role === 'collaborator') {
-        subtitle.textContent = 'Envía un borrador para que un Redactor o Administrador lo revise y publique.';
-        btnPublish.textContent = 'Enviar a Revisión';
+        subtitle.textContent = t('dash.news_create.subtitle_collab');
+        btnPublish.textContent = t('dash.news_create.publish_collab');
         btnDraft.style.display = 'none';
     } else {
-        subtitle.textContent = 'Publica un artículo inmediatamente o guárdalo como borrador.';
-        btnPublish.textContent = 'Publicar Artículo';
+        subtitle.textContent = t('dash.news_create.subtitle_writer');
+        btnPublish.textContent = t('dash.news_create.publish');
         btnDraft.style.display = 'inline-block';
     }
 }
@@ -290,21 +284,25 @@ function loadNewsManageSection() {
     tableBody.innerHTML = '';
 
     if (newsData.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: #7f8c8d;">No hay noticias registradas.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: #7f8c8d;">${t('dash.news_manage.empty')}</td></tr>`;
         return;
     }
 
     newsData.forEach(item => {
-        const statusLabels = { published: 'Publicada', draft: 'Borrador', pending: 'Pendiente' };
+        const statusLabels = {
+            published: t('news.status.published'),
+            draft: t('news.status.draft'),
+            pending: t('news.status.pending')
+        };
         const statusColors = { published: '#2ecc71', draft: '#f1c40f', pending: '#e67e22' };
         const color = statusColors[item.status] || '#95a5a6';
         const label = statusLabels[item.status] || item.status;
 
         const statusBadge = `<span style="background: ${color}22; color: ${color}; border: 1px solid ${color}44; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">${label}</span>`;
 
-        let actions = `<button class="btn-small danger btn-delete-news" data-id="${item.id}">Eliminar</button>`;
+        let actions = `<button class="btn-small danger btn-delete-news" data-id="${item.id}">${t('news.action.delete')}</button>`;
         if (item.status === 'pending' || item.status === 'draft') {
-            actions = `<button class="btn-small btn-publish" data-id="${item.id}" style="background: rgba(46,204,113,0.15); color: #2ecc71; border-color: #2ecc7155; margin-right: 5px;">Publicar</button>` + actions;
+            actions = `<button class="btn-small btn-publish" data-id="${item.id}" style="background: rgba(46,204,113,0.15); color: #2ecc71; border-color: #2ecc7155; margin-right: 5px;">${t('news.action.publish')}</button>` + actions;
         }
 
         const tr = document.createElement('tr');
@@ -327,7 +325,7 @@ function loadNewsManageSection() {
 
     tableBody.querySelectorAll('.btn-delete-news').forEach(btn => {
         btn.addEventListener('click', function() {
-            if (confirm('¿Eliminar esta noticia?')) {
+            if (confirm(t('dash.news.confirm_delete'))) {
                 deleteNewsArticle(parseInt(this.getAttribute('data-id')));
             }
         });
@@ -338,11 +336,11 @@ function publishNewsArticle(id) {
     const article = newsData.find(n => n.id === id);
     if (article) {
         article.status = 'published';
-        article.date = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+        article.date = new Date().toLocaleDateString(currentLang === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' });
         saveDataToStorage();
         loadNewsManageSection();
         loadGeneralDashboard();
-        alert(`"${article.title}" publicada.`);
+        alert(`"${article.title}" ${t('dash.news.action_published')}.`);
     }
 }
 
@@ -351,7 +349,7 @@ function deleteNewsArticle(id) {
     saveDataToStorage();
     loadNewsManageSection();
     loadGeneralDashboard();
-    alert('Noticia eliminada.');
+    alert(t('dash.news.deleted'));
 }
 
 function loadUsersManageSection() {
@@ -378,7 +376,7 @@ function loadUsersManageSection() {
                 </select>
             </td>
             <td style="padding: 12px;">
-                <button class="btn-small danger btn-delete-user" data-email="${u.email}">Suspender</button>
+                <button class="btn-small danger btn-delete-user" data-email="${u.email}">${t('dash.users.suspend')}</button>
             </td>
         `;
         tableBody.appendChild(tr);
@@ -393,7 +391,7 @@ function loadUsersManageSection() {
     tableBody.querySelectorAll('.btn-delete-user').forEach(btn => {
         btn.addEventListener('click', function() {
             const email = this.getAttribute('data-email');
-            if (confirm(`¿Eliminar la cuenta de ${email}?`)) {
+            if (confirm(`${t('dash.users.confirm_delete')} ${email}?`)) {
                 deleteUserAccount(email);
             }
         });
@@ -407,7 +405,7 @@ function changeUserRole(email, newRole) {
         saveDataToStorage();
         loadUsersManageSection();
         loadReportsSection();
-        alert(`Rol de ${user.name} actualizado a ${getRoleDisplayName(newRole)}.`);
+        alert(t('dash.users.role_updated'));
     }
 }
 
@@ -416,7 +414,7 @@ function deleteUserAccount(email) {
     saveDataToStorage();
     loadUsersManageSection();
     loadReportsSection();
-    alert('Usuario eliminado.');
+    alert(t('dash.users.deleted'));
 }
 
 function loadReportsSection() {
@@ -434,10 +432,10 @@ function loadReportsSection() {
     usersData.forEach(u => { if (u.role in roleCounts) roleCounts[u.role]++; });
 
     const display = [
-        { key: 'admin', label: 'Admins', color: '#ff0000', bg: 'rgba(255,0,0,0.1)' },
-        { key: 'writer', label: 'Redactores', color: '#f1c40f', bg: 'rgba(241,196,15,0.1)' },
-        { key: 'collaborator', label: 'Colaboradores', color: '#3498db', bg: 'rgba(52,152,219,0.1)' },
-        { key: 'subscriber', label: 'Suscriptores', color: '#2ecc71', bg: 'rgba(46,204,113,0.1)' }
+        { key: 'admin', label: t('dash.reports.admins'), color: '#ff0000', bg: 'rgba(255,0,0,0.1)' },
+        { key: 'writer', label: t('dash.reports.writers'), color: '#f1c40f', bg: 'rgba(241,196,15,0.1)' },
+        { key: 'collaborator', label: t('dash.reports.collaborators'), color: '#3498db', bg: 'rgba(52,152,219,0.1)' },
+        { key: 'subscriber', label: t('dash.reports.subscribers'), color: '#2ecc71', bg: 'rgba(46,204,113,0.1)' }
     ];
 
     display.forEach(item => {
@@ -466,7 +464,7 @@ function loadSettingsSection() {
         settings.allowComments = document.getElementById('allowComments').checked;
         settings.maintenanceMessage = document.getElementById('maintenanceMessage').value;
         localStorage.setItem('platformSettings', JSON.stringify(settings));
-        alert('Configuración guardada.');
+        alert(t('dash.settings.saved'));
     });
 }
 
@@ -478,7 +476,7 @@ function setupFormListeners() {
             const newName = document.getElementById('profileFormName').value.trim();
             const newBio = document.getElementById('profileFormBio').value.trim();
 
-            if (!newName) { alert('El nombre es obligatorio.'); return; }
+            if (!newName) { alert(t('dash.profile.name_required')); return; }
 
             const idx = usersData.findIndex(u => u.email === currentUser.email);
             if (idx !== -1) {
@@ -491,7 +489,7 @@ function setupFormListeners() {
                 saveDataToStorage();
                 updateUserDisplay();
                 injectNavbar();
-                alert('Perfil actualizado.');
+                alert(t('dash.profile.saved'));
             }
         });
     }
@@ -517,7 +515,7 @@ function submitNewsForm(action) {
     const content = document.getElementById('newsContent').value.trim();
 
     if (!title || !excerpt || !content) {
-        alert('Rellena el título, copete y contenido.');
+        alert(t('dash.news_create.required_fields'));
         return;
     }
 
@@ -531,7 +529,7 @@ function submitNewsForm(action) {
     newsData.push({
         id: newsData.length > 0 ? Math.max(...newsData.map(n => n.id)) + 1 : 1,
         title, category, excerpt, content,
-        date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }),
+        date: new Date().toLocaleDateString(currentLang === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
         author: currentUser.name,
         imageGradient: gradient,
         status,
@@ -541,11 +539,11 @@ function submitNewsForm(action) {
     saveDataToStorage();
 
     if (status === 'pending') {
-        alert('Borrador enviado a revisión.');
+        alert(t('dash.news_create.sent_for_review'));
     } else if (status === 'draft') {
-        alert('Guardado como borrador.');
+        alert(t('dash.news_create.saved_draft'));
     } else {
-        alert(`"${title}" publicada.`);
+        alert(`"${title}" ${t('dash.news.action_published')}.`);
     }
 
     document.getElementById('newsCreateForm').reset();

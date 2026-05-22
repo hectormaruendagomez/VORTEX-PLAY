@@ -47,14 +47,14 @@ function setupFormValidation() {
 
         let valid = true;
         if (!email) {
-            showInputError(emailInput, 'El email es obligatorio.');
+            showInputError(emailInput, t('auth.error.email_required'));
             valid = false;
         } else if (!isValidEmail(email)) {
-            showInputError(emailInput, 'Introduce un email válido.');
+            showInputError(emailInput, t('auth.error.email_invalid'));
             valid = false;
         }
         if (!password) {
-            showInputError(passwordInput, 'La contraseña es obligatoria.');
+            showInputError(passwordInput, t('auth.error.password_required'));
             valid = false;
         }
         if (!valid) return;
@@ -64,11 +64,11 @@ function setupFormValidation() {
 
         if (user) {
             localStorage.setItem('currentUser', JSON.stringify(user));
-            alert(`Bienvenido, ${user.name}.`);
+            alert(`${t('auth.success.welcome')}, ${user.name}.`);
             window.location.href = 'dashboard.html';
         } else {
-            showInputError(emailInput, 'Email o contraseña incorrectos.');
-            showInputError(passwordInput, 'Verifica tus credenciales e inténtalo de nuevo.');
+            showInputError(emailInput, t('auth.error.credentials'));
+            showInputError(passwordInput, t('auth.error.credentials_hint'));
         }
     });
 
@@ -86,13 +86,13 @@ function setupFormValidation() {
             }
             hint.style.display = 'block';
             if (strength === 'weak') {
-                hint.textContent = 'Contraseña débil: mínimo 8 caracteres.';
+                hint.textContent = t('auth.error.password_weak');
                 hint.style.color = '#e74c3c';
             } else if (strength === 'medium') {
-                hint.textContent = 'Contraseña aceptable. Añade números o símbolos para reforzarla.';
+                hint.textContent = t('auth.error.password_medium');
                 hint.style.color = '#f1c40f';
             } else {
-                hint.textContent = 'Contraseña fuerte.';
+                hint.textContent = t('auth.error.password_strong');
                 hint.style.color = '#2ecc71';
             }
         });
@@ -116,35 +116,35 @@ function setupFormValidation() {
 
         let valid = true;
         if (!name || name.length < 2) {
-            showInputError(nameInput, 'El nombre debe tener al menos 2 caracteres.');
+            showInputError(nameInput, t('auth.error.name_short'));
             valid = false;
         }
         if (!email) {
-            showInputError(emailInput, 'El email es obligatorio.');
+            showInputError(emailInput, t('auth.error.email_required'));
             valid = false;
         } else if (!isValidEmail(email)) {
-            showInputError(emailInput, 'Introduce un email válido (ej: usuario@dominio.com).');
+            showInputError(emailInput, t('auth.error.email_invalid_ex'));
             valid = false;
         }
         if (password.length < 8) {
-            showInputError(passInput, 'La contraseña debe tener al menos 8 caracteres.');
+            showInputError(passInput, t('auth.error.password_min'));
             valid = false;
         }
         if (password !== confirm) {
-            showInputError(confirmInput, 'Las contraseñas no coinciden.');
+            showInputError(confirmInput, t('auth.error.passwords_mismatch'));
             valid = false;
         }
         if (!valid) return;
 
         const users = JSON.parse(localStorage.getItem('usersData')) || [];
         if (users.some(u => u.email.toLowerCase() === email)) {
-            showInputError(emailInput, 'Este email ya está registrado.');
+            showInputError(emailInput, t('auth.error.email_taken'));
             return;
         }
 
         const settings = JSON.parse(localStorage.getItem('platformSettings')) || { allowRegistration: true };
         if (!settings.allowRegistration) {
-            alert('El registro está desactivado temporalmente. Contacta con el administrador.');
+            alert(t('auth.error.reg_disabled'));
             return;
         }
 
@@ -152,7 +152,7 @@ function setupFormValidation() {
         users.push({ email, password, name, role, avatar: avatar || 'US' });
         localStorage.setItem('usersData', JSON.stringify(users));
 
-        alert('Cuenta creada correctamente. Ya puedes iniciar sesión.');
+        alert(t('auth.success.register'));
         registerForm.reset();
         document.getElementById('loginToggle').click();
         document.getElementById('loginEmail').value = email;

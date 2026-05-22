@@ -85,12 +85,13 @@ const EVENTS = [
     },
 ];
 
-const TYPE_LABELS = {
-    launch: 'Lanzamiento',
-    tournament: 'Torneo',
-    update: 'Actualización',
-    event: 'Evento',
-};
+function getTypeLabel(type) {
+    return t(`agenda.type.${type}`) || type;
+}
+
+function getMonthNames() {
+    return Array.from({ length: 12 }, (_, i) => t(`agenda.month.${i}`));
+}
 
 let currentYear = 2026;
 let currentMonth = 5;
@@ -99,6 +100,11 @@ let selectedDay = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     renderCalendar();
+
+    document.addEventListener('translationsApplied', function() {
+        renderCalendar();
+        if (selectedDay === null) resetDetailPanel();
+    });
 
     document.getElementById('btnPrevMonth').addEventListener('click', function() {
         currentMonth--;
@@ -139,7 +145,7 @@ function getEventsForDay(year, month, day) {
 }
 
 function renderCalendar() {
-    const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    const monthNames = getMonthNames();
     document.getElementById('calendarTitle').textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
     const grid = document.getElementById('calendarGrid');
@@ -192,16 +198,16 @@ function renderCalendar() {
 }
 
 function showDayDetail(day, events) {
-    const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    const monthNames = getMonthNames();
     const panel = document.getElementById('detailPanel');
     panel.classList.remove('empty-state');
 
-    let html = `<h3 style="color:#00d4ff; margin-bottom:15px; font-size:1.1rem;">${day} de ${monthNames[currentMonth]}</h3>`;
+    let html = `<h3 style="color:#00d4ff; margin-bottom:15px; font-size:1.1rem;">${day} ${t('agenda.date.of')} ${monthNames[currentMonth]}</h3>`;
 
     events.forEach(ev => {
         html += `
             <div class="event-detail-card ${ev.type}">
-                <div class="event-card-type ${ev.type}">${TYPE_LABELS[ev.type] || ev.type}</div>
+                <div class="event-card-type ${ev.type}">${getTypeLabel(ev.type)}</div>
                 <div class="event-card-title">${ev.title}</div>
                 <div class="event-card-desc">${ev.description}</div>
                 <div class="event-card-date">📅 ${formatDate(ev.date)}</div>
@@ -215,11 +221,12 @@ function showDayDetail(day, events) {
 function resetDetailPanel() {
     const panel = document.getElementById('detailPanel');
     panel.classList.add('empty-state');
-    panel.innerHTML = '<span>📅</span><p>Selecciona un día para ver los eventos</p>';
+    panel.innerHTML = `<span>📅</span><p>${t('agenda.empty')}</p>`;
 }
 
 function formatDate(dateStr) {
     const [y, m, d] = dateStr.split('-');
-    const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-    return `${parseInt(d)} de ${monthNames[parseInt(m) - 1]} de ${y}`;
+    const monthNames = getMonthNames();
+    const of = t('agenda.date.of');
+    return `${parseInt(d)} ${of} ${monthNames[parseInt(m) - 1]} ${of} ${y}`;
 }

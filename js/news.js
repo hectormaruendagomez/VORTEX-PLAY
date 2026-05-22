@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     initNewsPage();
+    document.addEventListener('translationsApplied', renderNews);
 });
 
 let newsList = [];
@@ -25,8 +26,8 @@ function renderNews() {
     if (visible.length === 0) {
         newsGrid.innerHTML = `
             <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 40px; color: #bdc3c7;">
-                <h3>No se encontraron noticias</h3>
-                <p>Prueba con otra categoría.</p>
+                <h3>${t('news.empty.title')}</h3>
+                <p>${t('news.empty.hint')}</p>
             </div>
         `;
         return;
@@ -44,15 +45,15 @@ function renderNews() {
         article.innerHTML = `
             <div class="article-image" style="background: ${news.imageGradient || 'linear-gradient(135deg, #09091e, #151535)'};"></div>
             <div class="article-content">
-                <span class="article-category">${getCategoryIcon(news.category)} ${news.category}</span>
+                <span class="article-category">${getCategoryIcon(news.category)} ${translateCategory(news.category)}</span>
                 <h2 class="article-title">${news.title}</h2>
                 <p class="article-excerpt">${news.excerpt}</p>
                 <div class="article-meta">
                     <span>📅 ${news.date}</span>
                     <span>✍️ ${news.author}</span>
-                    <span>👁️ ${viewsDisplay} vistas</span>
+                    <span>👁️ ${viewsDisplay} ${t('news.views')}</span>
                 </div>
-                <a href="news-detail.html?id=${news.id}" class="btn-read-more">Leer más →</a>
+                <a href="news-detail.html?id=${news.id}" class="btn-read-more">${t('index.read_more')}</a>
             </div>
         `;
 
@@ -98,12 +99,35 @@ function setupCategoryEvents() {
 
 function getCategoryIcon(category) {
     const icons = {
-        'Esports': '🏆',
-        'Tecnología': '🚀',
-        'Lanzamientos': '🎮',
-        'Tendencias': '📈',
-        'Plataformas': '☁️',
-        'Streaming': '🎥'
+        'esports': '🏆',
+        'tecnología': '🚀',
+        'tecnologia': '🚀',
+        'lanzamientos': '🎮',
+        'tendencias': '📈',
+        'plataformas': '☁️',
+        'streaming': '🎥',
+        'technology': '🚀',
+        'launches': '🎮',
+        'trends': '📈',
+        'platforms': '☁️'
     };
-    return icons[category] || '📰';
+    return icons[category.toLowerCase()] || '📰';
+}
+
+function translateCategory(category) {
+    const map = {
+        'esports': 'news.cat.esports',
+        'tecnología': 'news.cat.tech',
+        'tecnologia': 'news.cat.tech',
+        'lanzamientos': 'news.cat.launches',
+        'tendencias': 'news.cat.trends',
+        'plataformas': 'news.cat.platforms',
+        'streaming': 'news.cat.streaming',
+        'technology': 'news.cat.tech',
+        'launches': 'news.cat.launches',
+        'trends': 'news.cat.trends',
+        'platforms': 'news.cat.platforms'
+    };
+    const key = map[category.toLowerCase()];
+    return t(key) || category;
 }
