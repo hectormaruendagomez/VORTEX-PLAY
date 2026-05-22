@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticia - Vortex Play</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/common.js"></script>
+</head>
+<body>
+    <nav class="navbar"></nav>
+
+    <div class="news-detail-container">
+        <a href="news.html" class="news-detail-back">← Volver al Centro de Noticias</a>
+
+        <article class="news-detail-article">
+            <header class="news-detail-header">
+                <span class="article-category" id="articleCategory">Categoría</span>
+                <h1 id="articleTitle">Cargando artículo...</h1>
+                <div class="news-detail-meta">
+                    <span id="articleDate">📅 -- de -- de ----</span>
+                    <span id="articleAuthor">✍️ Autor</span>
+                    <span id="articleViews">👁️ 0 vistas</span>
+                </div>
+            </header>
+
+            <div class="news-detail-image" id="articleImage" style="background: linear-gradient(135deg, #2c3e50, #3498db);"></div>
+
+            <div class="news-detail-content" id="articleContent"></div>
+        </article>
+
+        <section class="comments-section" style="background: rgba(20,20,45,0.6); border: 1px solid rgba(0,212,255,0.15); border-radius: 12px; margin-top: 50px;">
+            <h3 id="commentsTitle">Comentarios (0)</h3>
+
+            <div id="commentFormContainer"></div>
+
+            <div class="comments-list" id="commentsList">
+                <p style="color: #7f8c8d; text-align: center;">Cargando comentarios...</p>
+            </div>
+        </section>
+    </div>
+
+    <footer class="main-footer" style="text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9rem; border-top: 1px solid rgba(0, 212, 255, 0.1); margin-top: 60px;">
+        <p data-i18n="footer.rights">&copy; 2026 Vortex Play & Services Ecosystem. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="../js/lang.js"></script>
+    <script>
+        let currentArticle = null;
+        let articleId = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNewsDetail();
+        });
+
+        function loadNewsDetail() {
+            const params = new URLSearchParams(window.location.search);
+            articleId = params.get('id');
+
+            if (!articleId) {
+                alert('ID de artículo no especificado.');
+                window.location.href = 'news.html';
+                return;
+            }
+
+            const newsData = JSON.parse(localStorage.getItem('newsData')) || [];
+            currentArticle = newsData.find(n => n.id == articleId);
+
+            if (!currentArticle) {
+                alert('La noticia no existe.');
+                window.location.href = 'news.html';
+                return;
+            }
+
+            currentArticle.views = (currentArticle.views || 0) + 1;
+            localStorage.setItem('newsData', JSON.stringify(newsData));
+
+            document.title = `${currentArticle.title} - Vortex Play`;
+            document.getElementById('articleCategory').textContent = currentArticle.category;
+            document.getElementById('articleTitle').textContent = currentArticle.title;
+            document.getElementById('articleDate').textContent = `📅 ${currentArticle.date}`;
+            document.getElementById('articleAuthor').textContent = `✍️ ${currentArticle.author}`;
+            document.getElementById('articleViews').textContent = `👁️ ${currentArticle.views} vistas`;
+
+            if (currentArticle.imageGradient) {
+                document.getElementById('articleImage').style.background = currentArticle.imageGradient;
+            }
+
+            const contentDiv = document.getElementById('articleContent');
+            contentDiv.innerHTML = '';
+            currentArticle.content.split('\n\n').forEach(para => {
+                if (para.trim()) {
+                    const p = document.createElement('p');
+                    p.textContent = para.trim();
+                    contentDiv.appendChild(p);
+                }
+            });
+
+            loadComments();
+            setupCommentForm();
+        }
+
+        function loadComments() {
+            const commentsData = JSON.parse(localStorage.getItem('commentsData')) || {};
+            const comments = commentsData[articleId] || [];
+
+            document.getElementById('commentsTitle').textContent = `Comentarios (${comments.length})`;
+
+            const listEl = document.getElementById('commentsList');
+            listEl.innerHTML = '';
+
+            if (comments.length === 0) {
+                listEl.innerHTML = `<p style="color: #7f8c8d; text-align: center; padding: 20px;">Sin comentarios todavía. ¡Sé el primero!</p>`;
+                return;
+            }
+
+            comments.forEach((c, index) => {
+                const initials = c.author.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                const div = document.createElement('div');
+                div.className = 'comment';
+                div.innerHTML = `
+                    <div class="comment-author">
+                        <div class="comment-avatar">${initials}</div>
+                        <div class="author-info">
+                            <strong>${c.author}</strong>
+                            <small>${getRoleDisplayName(c.role)}</small>
+                        </div>
+                        <span class="comment-date">${c.date}</span>
+                    </div>
+                    <p class="comment-text">${c.text}</p>
+                    <div class="comment-actions">
+                        <button class="btn-like" data-index="${index}">❤️ <span>${c.likes || 0}</span></button>
+                    </div>
+                `;
+                listEl.appendChild(div);
+            });
+
+            listEl.querySelectorAll('.btn-like').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    addLike(parseInt(this.getAttribute('data-index')));
+                });
+            });
+        }
+
+        function setupCommentForm() {
+            const container = document.getElementById('commentFormContainer');
+            const settings = JSON.parse(localStorage.getItem('platformSettings')) || { allowComments: true };
+
+            if (!settings.allowComments) {
+                container.innerHTML = `
+                    <div class="comment-form" style="text-align: center; padding: 20px; border: 1px solid rgba(231,76,60,0.3); background: rgba(231,76,60,0.05); border-radius: 8px;">
+                        <p style="color: #e74c3c; font-weight: 600; margin: 0;">Los comentarios están desactivados temporalmente.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const user = getCurrentUser();
+            if (!user) {
+                container.innerHTML = `
+                    <div class="comment-form" style="text-align: center; padding: 20px; border: 1px solid rgba(0,212,255,0.2); background: rgba(0,212,255,0.03); border-radius: 8px;">
+                        <p class="login-hint" style="margin: 0;">Para comentar, <a href="auth.html">inicia sesión</a>.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <form id="commentForm" class="comment-form">
+                    <textarea id="commentText" class="comment-input" placeholder="Escribe un comentario..." required></textarea>
+                    <div class="comment-form-footer">
+                        <span style="font-size: 0.85rem; color: #7f8c8d;">Comentando como <strong style="color: #00d4ff;">${user.name}</strong></span>
+                        <button type="submit" class="btn-comment">Publicar</button>
+                    </div>
+                </form>
+            `;
+
+            document.getElementById('commentForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitComment();
+            });
+        }
+
+        function submitComment() {
+            const text = document.getElementById('commentText').value.trim();
+            if (!text) return;
+
+            const user = getCurrentUser();
+            const commentsData = JSON.parse(localStorage.getItem('commentsData')) || {};
+            if (!commentsData[articleId]) commentsData[articleId] = [];
+
+            commentsData[articleId].push({
+                author: user.name,
+                role: user.role,
+                email: user.email,
+                date: 'hace un momento',
+                text,
+                likes: 0
+            });
+
+            localStorage.setItem('commentsData', JSON.stringify(commentsData));
+            document.getElementById('commentText').value = '';
+            loadComments();
+        }
+
+        function addLike(index) {
+            const commentsData = JSON.parse(localStorage.getItem('commentsData')) || {};
+            const comments = commentsData[articleId] || [];
+            if (comments[index]) {
+                comments[index].likes = (comments[index].likes || 0) + 1;
+                commentsData[articleId] = comments;
+                localStorage.setItem('commentsData', JSON.stringify(commentsData));
+                loadComments();
+            }
+        }
+    </script>
+</body>
+</html>

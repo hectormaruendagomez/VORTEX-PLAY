@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias - Vortex Play</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/common.js"></script>
+</head>
+<body>
+    <nav class="navbar"></nav>
+
+    <div class="news-container">
+        <header class="news-header">
+            <h1 data-i18n="news.header.title">📰 Centro de Noticias</h1>
+            <p data-i18n="news.header.subtitle">Mantente al día con las últimas novedades del mundo gaming</p>
+        </header>
+
+        <div class="news-content">
+            <aside class="news-sidebar">
+                <div class="categories-section">
+                    <h3 data-i18n="news.sidebar.categories">Categorías</h3>
+                    <ul class="category-list" id="categoryList">
+                        <li><a href="#" class="category-link active" data-category="all" data-i18n="news.cat.all">📊 Todas</a></li>
+                        <li><a href="#" class="category-link" data-category="Tecnología" data-i18n="news.cat.tech">🚀 Tecnología</a></li>
+                        <li><a href="#" class="category-link" data-category="Esports" data-i18n="news.cat.esports">🏆 Esports</a></li>
+                        <li><a href="#" class="category-link" data-category="Lanzamientos" data-i18n="news.cat.launches">🎮 Lanzamientos</a></li>
+                        <li><a href="#" class="category-link" data-category="Tendencias" data-i18n="news.cat.trends">📈 Tendencias</a></li>
+                        <li><a href="#" class="category-link" data-category="Plataformas" data-i18n="news.cat.platforms">☁️ Plataformas</a></li>
+                        <li><a href="#" class="category-link" data-category="Streaming" data-i18n="news.cat.streaming">🎥 Streaming</a></li>
+                    </ul>
+                </div>
+
+                <div class="trending-section">
+                    <h3 data-i18n="news.sidebar.trending">Tendencias</h3>
+                    <div class="trending-list" id="trendingList"></div>
+                </div>
+
+                <div class="categories-section" data-requires-role="admin,writer,collaborator">
+                    <h3 data-i18n="news.sidebar.redaction">Redacción</h3>
+                    <a href="dashboard.html" class="btn-primary" style="display:block; text-align:center; text-decoration:none; padding:10px 16px; font-size:0.9rem;">✍️ Crear Noticia</a>
+                </div>
+            </aside>
+
+            <main class="news-grid" id="newsGrid"></main>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <p data-i18n="footer.rights">&copy; 2026 Vortex Play & Services Ecosystem. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="../js/lang.js"></script>
+    <script src="../js/news.js"></script>
+</body>
+</html>

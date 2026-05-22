@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Vortex Play</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/common.js"></script>
+</head>
+<body>
+    <nav class="navbar"></nav>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="user-profile">
+                <div class="profile-avatar">
+                    <span id="avatarInitial">U</span>
+                </div>
+                <h3 id="profileName">Usuario</h3>
+                <p id="profileRole" class="profile-role">Suscriptor</p>
+            </div>
+
+            <nav class="sidebar-menu">
+                <h4 data-i18n="dash.menu.main">Menú Principal</h4>
+                <a href="#dashboard" class="sidebar-link active" data-section="dashboard" data-i18n="dash.menu.panel">📊 Panel General</a>
+                <a href="#profile" class="sidebar-link" data-section="profile" data-i18n="dash.menu.profile">👤 Mi Perfil</a>
+                <a href="#favorites" class="sidebar-link" data-section="favorites" data-i18n="dash.menu.favorites">⭐ Favoritos</a>
+                <a href="#comments" class="sidebar-link" data-section="comments" data-i18n="dash.menu.comments">💬 Mis Comentarios</a>
+
+                <div id="contentMenu" class="sidebar-section hidden">
+                    <h4 data-i18n="dash.menu.content">Contenido</h4>
+                    <a href="#news-create" class="sidebar-link" data-section="news-create" data-i18n="dash.menu.news_create">✍️ Crear Noticia</a>
+                    <a href="#news-manage" class="sidebar-link hidden" id="linkNewsManage" data-section="news-manage" data-i18n="dash.menu.news_manage">📝 Gestionar Noticias</a>
+                </div>
+
+                <div id="adminMenu" class="sidebar-section hidden">
+                    <h4 data-i18n="dash.menu.admin">Administración</h4>
+                    <a href="#users-manage" class="sidebar-link" data-section="users-manage" data-i18n="dash.menu.users">👥 Gestionar Usuarios</a>
+                    <a href="#reports" class="sidebar-link" data-section="reports" data-i18n="dash.menu.reports">📈 Reportes</a>
+                    <a href="#settings" class="sidebar-link" data-section="settings" data-i18n="dash.menu.settings">⚙️ Configuración</a>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="dashboard-content">
+            <section id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h1 data-i18n="dash.panel.title">Panel de Control</h1>
+                    <p id="roleWelcome">Bienvenido a Vortex Play</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📰</div>
+                        <div class="stat-info">
+                            <h3 data-i18n="dash.stat.news">Noticias</h3>
+                            <p class="stat-number" id="statNewsCount">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <h3 data-i18n="dash.stat.favorites">Favoritos</h3>
+                            <p class="stat-number" id="statFavCount">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💬</div>
+                        <div class="stat-info">
+                            <h3 data-i18n="dash.stat.comments">Comentarios</h3>
+                            <p class="stat-number" id="statCommentsCount">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-info">
+                            <h3 data-i18n="dash.stat.role">Rol</h3>
+                            <p class="stat-number" style="font-size: 1.5rem;" id="statUserRole">Suscriptor</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h2 data-i18n="dash.activity.title">Actividad Reciente</h2>
+                    <div class="activity-list" id="recentActivityList"></div>
+                </div>
+            </section>
+
+            <section id="profile-section" class="content-section">
+                <div class="section-header">
+                    <h1 data-i18n="dash.profile.title">Mi Perfil</h1>
+                </div>
+
+                <form id="profileForm" class="profile-form">
+                    <div class="form-group">
+                        <label data-i18n="dash.profile.name">Nombre Completo</label>
+                        <input type="text" id="profileFormName" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="dash.profile.email">Email (no modificable)</label>
+                        <input type="email" id="profileFormEmail" class="form-input" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="dash.profile.role">Rol actual</label>
+                        <input type="text" id="profileFormRole" class="form-input" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="dash.profile.bio">Biografía (opcional)</label>
+                        <textarea id="profileFormBio" class="form-input" rows="4" placeholder="Cuéntanos sobre ti..." data-i18n-placeholder="dash.profile.placeholder_bio"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" data-i18n="dash.profile.save">Guardar Cambios</button>
+                </form>
+            </section>
+
+            <section id="favorites-section" class="content-section">
+                <div class="section-header">
+                    <h1 data-i18n="dash.favorites.title">Juegos Favoritos</h1>
+                </div>
+                <div class="favorites-grid" id="dashboardFavoritesGrid"></div>
+            </section>
+
+            <section id="comments-section" class="content-section">
+                <div class="section-header">
+                    <h1>Mis Comentarios</h1>
+                    <p>Gestiona los comentarios que has publicado</p>
+                </div>
+                <div class="comments-management">
+                    <div id="userCommentsList" class="user-comments-list"></div>
+                </div>
+            </section>
+
+            <section id="news-create-section" class="content-section">
+                <div class="section-header">
+                    <h1>Crear Nueva Noticia</h1>
+                    <p id="newsCreateSubtitle">Escribe un artículo para la comunidad</p>
+                </div>
+                <form id="newsCreateForm" class="news-create-form">
+                    <div class="form-group">
+                        <label for="newsTitle">Título del Artículo</label>
+                        <input type="text" id="newsTitle" class="form-input" placeholder="Ej: Avance exclusivo del próximo RPG del año" required>
+                    </div>
+                    <div class="form-row" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                        <div class="form-group" style="flex: 1; min-width: 200px;">
+                            <label for="newsCategory">Categoría</label>
+                            <select id="newsCategory" class="filter-select" style="background: rgba(10,10,25,0.8); border: 1px solid rgba(0,212,255,0.2); height: 44px;" required>
+                                <option value="Esports">Esports</option>
+                                <option value="Tecnología">Tecnología</option>
+                                <option value="Tendencias">Tendencias</option>
+                                <option value="Plataformas">Plataformas</option>
+                                <option value="Streaming">Streaming</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex: 1; min-width: 200px;">
+                            <label for="newsImage">Fondo Visual</label>
+                            <select id="newsImage" class="filter-select" style="background: rgba(10,10,25,0.8); border: 1px solid rgba(0,212,255,0.2); height: 44px;" required>
+                                <option value="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">Lila Profundo</option>
+                                <option value="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">Rosa Eléctrico</option>
+                                <option value="linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">Cian Neón</option>
+                                <option value="linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">Verde Esmeralda</option>
+                                <option value="linear-gradient(135deg, #fa709a 0%, #fee140 100%)">Naranja Fuego</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="newsExcerpt">Resumen Corto</label>
+                        <input type="text" id="newsExcerpt" class="form-input" placeholder="1 o 2 frases de introducción..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newsContent">Contenido</label>
+                        <textarea id="newsContent" class="form-input" rows="8" placeholder="Escribe el cuerpo del artículo..." required></textarea>
+                    </div>
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <button type="submit" id="btnPublishNews" class="btn-primary">Publicar Artículo</button>
+                        <button type="button" id="btnSaveDraft" style="padding: 12px 24px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 8px; cursor: pointer; font-weight: 700; transition: all 0.3s ease;">Guardar Borrador</button>
+                    </div>
+                </form>
+            </section>
+
+            <section id="news-manage-section" class="content-section">
+                <div class="section-header">
+                    <h1>Gestionar Noticias</h1>
+                    <p>Aprueba borradores o administra las noticias publicadas</p>
+                </div>
+                <div class="news-management-table" style="overflow-x: auto; margin-top: 20px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Autor</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="newsManageTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="users-manage-section" class="content-section">
+                <div class="section-header">
+                    <h1>Gestionar Usuarios</h1>
+                    <p>Administra los roles de la plataforma</p>
+                </div>
+                <div class="users-management-table" style="overflow-x: auto; margin-top: 20px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersManageTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="reports-section" class="content-section">
+                <div class="section-header">
+                    <h1>Reportes y Estadísticas</h1>
+                    <p>Métricas generales de Vortex Play</p>
+                </div>
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-info">
+                            <h3>Visitas Noticias</h3>
+                            <p class="stat-number" id="reportViews">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <h3>Usuarios</h3>
+                            <p class="stat-number" id="reportUsers">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📰</div>
+                        <div class="stat-info">
+                            <h3>Artículos</h3>
+                            <p class="stat-number" id="reportNews">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-activity" style="margin-top: 30px;">
+                    <h2>Distribución de Roles</h2>
+                    <div id="userDistributionList" style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 15px;"></div>
+                </div>
+            </section>
+
+            <section id="settings-section" class="content-section">
+                <div class="section-header">
+                    <h1>Configuración</h1>
+                    <p>Ajustes globales de la plataforma</p>
+                </div>
+                <div class="profile-form">
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label class="filter-label" style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="allowRegistration" checked style="width: 18px; height: 18px; cursor: pointer;">
+                            Permitir nuevos registros
+                        </label>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label class="filter-label" style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="allowComments" checked style="width: 18px; height: 18px; cursor: pointer;">
+                            Habilitar comentarios
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Mensaje de mantenimiento</label>
+                        <input type="text" class="form-input" id="maintenanceMessage" value="¡Estamos trabajando en nuevas funciones!">
+                    </div>
+                    <button class="btn-primary" id="btnSaveSettings" style="margin-top: 15px;">Guardar Configuración</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/lang.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

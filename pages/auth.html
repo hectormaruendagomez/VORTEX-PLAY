@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceder - Vortex Play</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/common.js"></script>
+</head>
+<body class="auth-body">
+
+    <div class="auth-page-wrapper">
+        <div class="auth-card">
+
+            <div class="auth-header">
+                <h1>🎮 Vortex Play</h1>
+                <p data-i18n="auth.header.subtitle">Accede o crea tu cuenta</p>
+            </div>
+
+            <div class="auth-toggle">
+                <button class="toggle-btn active" id="loginToggle" data-i18n="auth.toggle.login">Iniciar Sesión</button>
+                <button class="toggle-btn" id="registerToggle" data-i18n="auth.toggle.register">Registrarse</button>
+            </div>
+
+            <!-- ── Login ── -->
+            <form class="auth-form active" id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="loginEmail" data-i18n="auth.login.email">Email</label>
+                    <input type="email" id="loginEmail" name="email" required
+                           placeholder="tu@email.com" data-i18n-placeholder="contact.placeholder.email" autocomplete="email">
+                    <span class="error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword" data-i18n="auth.login.password">Contraseña</label>
+                    <input type="password" id="loginPassword" name="password" required
+                           placeholder="••••••••" autocomplete="current-password">
+                    <span class="error-msg"></span>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember">
+                        <span data-i18n="auth.login.remember">Recuérdame</span>
+                    </label>
+                    <a href="#" class="forgot-password" data-i18n="auth.login.forgot">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <button type="submit" class="btn-submit" data-i18n="auth.login.submit">Iniciar Sesión</button>
+
+                <div class="quick-login-title" data-i18n="auth.quick.title">Acceso Rápido por Rol</div>
+                <div class="quick-login-grid">
+                    <div class="quick-login-card"
+                         data-email="admin@gamehub.com"
+                         data-password="admin123">
+                        <div class="role-title" data-i18n="auth.quick.admin">Administrador</div>
+                        <div class="role-desc">admin123</div>
+                    </div>
+                    <div class="quick-login-card"
+                         data-email="redactor@gamehub.com"
+                         data-password="redactor123">
+                        <div class="role-title" data-i18n="auth.quick.writer">Redactor</div>
+                        <div class="role-desc">redactor123</div>
+                    </div>
+                    <div class="quick-login-card"
+                         data-email="colaborador@gamehub.com"
+                         data-password="colaborador123">
+                        <div class="role-title" data-i18n="auth.quick.collaborator">Colaborador</div>
+                        <div class="role-desc">colaborador123</div>
+                    </div>
+                    <div class="quick-login-card"
+                         data-email="suscriptor@gamehub.com"
+                         data-password="suscriptor123">
+                        <div class="role-title" data-i18n="auth.quick.subscriber">Suscriptor</div>
+                        <div class="role-desc">suscriptor123</div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- ── Registro ── -->
+            <form class="auth-form" id="registerForm" novalidate>
+                <div class="form-group">
+                    <label for="registerName" data-i18n="auth.register.name">Nombre Completo</label>
+                    <input type="text" id="registerName" name="name" required
+                           placeholder="Tu nombre completo" data-i18n-placeholder="auth.placeholder.name" autocomplete="name">
+                    <span class="error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerEmail" data-i18n="auth.register.email">Email</label>
+                    <input type="email" id="registerEmail" name="email" required
+                           placeholder="tu@email.com" data-i18n-placeholder="contact.placeholder.email" autocomplete="email">
+                    <span class="error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPassword" data-i18n="auth.register.password">Contraseña</label>
+                    <input type="password" id="registerPassword" name="password" required
+                           placeholder="Mínimo 8 caracteres" data-i18n-placeholder="auth.placeholder.password_min" autocomplete="new-password">
+                    <span class="error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerConfirm" data-i18n="auth.register.confirm">Confirmar Contraseña</label>
+                    <input type="password" id="registerConfirm" name="confirm" required
+                           placeholder="Repite tu contraseña" data-i18n-placeholder="auth.placeholder.confirm" autocomplete="new-password">
+                    <span class="error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerRole" data-i18n="auth.register.role">Tipo de Cuenta</label>
+                    <select id="registerRole" name="role">
+                        <option value="subscriber" data-i18n="auth.register.role.subscriber">Suscriptor (por defecto)</option>
+                        <option value="collaborator" data-i18n="auth.register.role.collaborator">Colaborador</option>
+                        <option value="writer" data-i18n="auth.register.role.writer">Redactor (requiere invitación)</option>
+                    </select>
+                </div>
+
+                <label class="terms-check">
+                    <input type="checkbox" name="terms" required>
+                    <span data-i18n-html="auth.register.terms">Acepto los <a href="#" style="color:#00d4ff;">términos y condiciones</a></span>
+                </label>
+
+                <button type="submit" class="btn-submit" data-i18n="auth.register.submit">Crear Cuenta</button>
+            </form>
+
+            <div class="auth-footer">
+                <p data-i18n-html="auth.footer.problems">¿Problemas? <a href="contact.html">Contacta soporte</a></p>
+                <nav class="auth-quick-links" aria-label="Navegación rápida">
+                    <a href="index.html">🏠 Inicio</a>
+                    <a href="news.html">📰 Noticias</a>
+                    <a href="games.html">🎮 Catálogo</a>
+                    <a href="blog.html">💭 Blog</a>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="../js/lang.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

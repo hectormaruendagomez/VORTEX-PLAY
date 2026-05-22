@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - Vortex Play</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/common.js"></script>
+</head>
+<body>
+    <nav class="navbar"></nav>
+
+    <div class="games-container">
+        <header class="games-header">
+            <h1 data-i18n="games.header.title">🎮 Catálogo de Videojuegos</h1>
+            <p data-i18n="games.header.subtitle">Los mejores juegos con valoraciones de prensa y comunidad</p>
+        </header>
+
+        <div class="games-content">
+            <aside class="games-sidebar">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Buscar juego..." class="search-input">
+                </div>
+
+                <div class="filter-section">
+                    <h3 data-i18n="games.sort.label">Ordenar por</h3>
+                    <select id="sortSelect" class="filter-select">
+                        <option value="pressRating" data-i18n="games.sort.press">Mejor calificación Prensa</option>
+                        <option value="communityRating" data-i18n="games.sort.community">Mejor calificación Comunidad</option>
+                        <option value="year" data-i18n="games.sort.year">Más recientes</option>
+                        <option value="title" data-i18n="games.sort.az">Nombre (A-Z)</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <h3 data-i18n="games.filter.genre">Género</h3>
+                    <label class="filter-label"><input type="checkbox" value="action" class="genre-filter"> <span data-i18n="games.genre.action">Acción</span></label>
+                    <label class="filter-label"><input type="checkbox" value="rpg" class="genre-filter"> <span data-i18n="games.genre.rpg">RPG</span></label>
+                    <label class="filter-label"><input type="checkbox" value="strategy" class="genre-filter"> <span data-i18n="games.genre.strategy">Estrategia</span></label>
+                    <label class="filter-label"><input type="checkbox" value="adventure" class="genre-filter"> <span data-i18n="games.genre.adventure">Aventura</span></label>
+                </div>
+
+                <div class="filter-section">
+                    <h3 data-i18n="games.filter.platform">Plataforma</h3>
+                    <label class="filter-label"><input type="checkbox" value="pc" class="platform-filter"> <span data-i18n="games.platform.pc">PC</span></label>
+                    <label class="filter-label"><input type="checkbox" value="console" class="platform-filter"> <span data-i18n="games.platform.console">Consolas</span></label>
+                    <label class="filter-label"><input type="checkbox" value="mobile" class="platform-filter"> <span data-i18n="games.platform.mobile">Mobile</span></label>
+                </div>
+            </aside>
+
+            <main class="games-grid" id="gamesGrid"></main>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <p data-i18n="footer.rights">&copy; 2026 Vortex Play & Services Ecosystem. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="../js/lang.js"></script>
+    <script src="../js/games.js"></script>
+</body>
+</html>

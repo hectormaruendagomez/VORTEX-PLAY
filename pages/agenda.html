@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - Vortex Play</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/common.js"></script>
+</head>
+<body>
+    <nav class="navbar"></nav>
+
+    <div class="agenda-container">
+        <header class="agenda-header">
+            <h1 data-i18n="agenda.header.title">📅 Agenda de Eventos</h1>
+            <p data-i18n="agenda.header.subtitle">Lanzamientos, torneos y eventos del mundo gaming</p>
+        </header>
+
+        <div class="agenda-filters" id="agendaFilters">
+            <button class="filter-btn active" data-type="all" data-i18n="agenda.filter.all">Todos</button>
+            <button class="filter-btn" data-type="launch" data-i18n="agenda.filter.launch">🚀 Lanzamientos</button>
+            <button class="filter-btn" data-type="tournament" data-i18n="agenda.filter.tournament">🏆 Torneos</button>
+            <button class="filter-btn" data-type="update" data-i18n="agenda.filter.update">🔄 Actualizaciones</button>
+            <button class="filter-btn" data-type="event" data-i18n="agenda.filter.event">🎪 Eventos</button>
+        </div>
+
+        <div class="agenda-layout">
+            <div class="calendar-panel">
+                <div class="calendar-nav">
+                    <button class="btn-cal-nav" id="btnPrevMonth">&#8249;</button>
+                    <h2 id="calendarTitle">Cargando...</h2>
+                    <button class="btn-cal-nav" id="btnNextMonth">&#8250;</button>
+                </div>
+
+                <div class="calendar-weekdays">
+                    <div class="calendar-weekday" data-i18n="agenda.weekday.mon">Lun</div>
+                    <div class="calendar-weekday" data-i18n="agenda.weekday.tue">Mar</div>
+                    <div class="calendar-weekday" data-i18n="agenda.weekday.wed">Mié</div>
+                    <div class="calendar-weekday" data-i18n="agenda.weekday.thu">Jue</div>
+                    <div class="calendar-weekday" data-i18n="agenda.weekday.fri">Vie</div>
+                    <div class="calendar-weekday" data-i18n="agenda.weekday.sat">Sáb</div>
+                    <div class="calendar-weekday" data-i18n="agenda.weekday.sun">Dom</div>
+                </div>
+
+                <div class="calendar-grid" id="calendarGrid"></div>
+
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-dot" style="background:#3498db;"></div><span data-i18n="agenda.legend.launch">Lanzamiento</span></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#e74c3c;"></div><span data-i18n="agenda.legend.tournament">Torneo</span></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#f1c40f;"></div><span data-i18n="agenda.legend.update">Actualización</span></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#9b59b6;"></div><span data-i18n="agenda.legend.event">Evento</span></div>
+                </div>
+            </div>
+
+            <div class="detail-panel empty-state" id="detailPanel">
+                <span>📅</span>
+                <p data-i18n="agenda.empty">Selecciona un día para ver los eventos</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <p data-i18n="footer.rights">&copy; 2026 Vortex Play & Services Ecosystem. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="../js/lang.js"></script>
+    <script src="../js/agenda.js"></script>
+</body>
+</html>
