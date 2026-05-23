@@ -11,77 +11,147 @@
     <nav class="navbar"></nav>
 
     <div class="contact-container">
+
         <header class="contact-header">
             <h1 data-i18n="contact.header.title">📬 Contacto</h1>
             <p data-i18n="contact.header.subtitle">Ponte en contacto con el equipo de Vortex Play</p>
         </header>
 
-        <div class="contact-card">
-            <form id="contactForm" class="contact-form" novalidate>
-                <div class="form-group">
-                    <label for="contactName"><span data-i18n="contact.label.name">Nombre completo</span> <span style="color:#e74c3c;">*</span></label>
-                    <input type="text" id="contactName" class="form-input" placeholder="Tu nombre" data-i18n-placeholder="contact.placeholder.name" autocomplete="name">
-                    <span class="contact-error" id="err-name"></span>
+        <div class="contact-layout">
+
+            <!-- ══ Columna izquierda: información ══ -->
+            <aside class="contact-info-panel">
+
+                <p class="contact-panel-intro">¿Tienes algo que contarnos? Estamos aquí para ayudarte. Escríbenos sobre dudas, colaboraciones, propuestas de contenido o lo que necesites.</p>
+
+                <div class="contact-detail-list">
+
+                    <div class="contact-detail-item">
+                        <span class="cdi-icon">📍</span>
+                        <div class="cdi-body">
+                            <h4>Dirección</h4>
+                            <p>Calle Gamer 42, Planta 3<br>28001 Madrid, España</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail-item">
+                        <span class="cdi-icon">📧</span>
+                        <div class="cdi-body">
+                            <h4>Email</h4>
+                            <p>soporte@vortexplay.com<br>redaccion@vortexplay.com</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail-item">
+                        <span class="cdi-icon">📞</span>
+                        <div class="cdi-body">
+                            <h4>Teléfono</h4>
+                            <p>+34 91 000 00 42</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail-item">
+                        <span class="cdi-icon">🕐</span>
+                        <div class="cdi-body">
+                            <h4>Horario de atención</h4>
+                            <p>Lun – Vie: 9:00 – 18:00<br>Fines de semana: cerrado</p>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="form-group">
-                    <label for="contactEmail"><span data-i18n="contact.label.email">Correo electrónico</span> <span style="color:#e74c3c;">*</span></label>
-                    <input type="email" id="contactEmail" class="form-input" placeholder="tu@email.com" data-i18n-placeholder="contact.placeholder.email" autocomplete="email">
-                    <span class="contact-error" id="err-email"></span>
+                <div class="contact-socials">
+                    <p class="socials-title">Síguenos en redes</p>
+                    <div class="socials-grid">
+                        <a href="#" class="social-pill twitch">🎮 Twitch</a>
+                        <a href="#" class="social-pill youtube">▶ YouTube</a>
+                        <a href="#" class="social-pill twitter">𝕏 Twitter</a>
+                        <a href="#" class="social-pill discord">💬 Discord</a>
+                        <a href="#" class="social-pill instagram">📸 Instagram</a>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="contactSubject"><span data-i18n="contact.label.subject">Asunto</span> <span style="color:#e74c3c;">*</span></label>
-                    <input type="text" id="contactSubject" class="form-input" placeholder="¿Sobre qué quieres contactarnos?" data-i18n-placeholder="contact.placeholder.subject">
-                    <span class="contact-error" id="err-subject"></span>
+            </aside>
+
+            <!-- ══ Columna derecha: formulario ══ -->
+            <div class="contact-card">
+
+                <form id="contactForm" class="contact-form" novalidate>
+
+                    <div class="form-group">
+                        <label for="contactName">
+                            <span data-i18n="contact.label.name">Nombre completo</span>
+                            <span style="color:#e74c3c;"> *</span>
+                        </label>
+                        <input type="text" id="contactName" class="form-input"
+                               placeholder="Tu nombre"
+                               data-i18n-placeholder="contact.placeholder.name"
+                               autocomplete="name">
+                        <span class="contact-error" id="err-name"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactEmail">
+                            <span data-i18n="contact.label.email">Correo electrónico</span>
+                            <span style="color:#e74c3c;"> *</span>
+                        </label>
+                        <input type="email" id="contactEmail" class="form-input"
+                               placeholder="tu@email.com"
+                               data-i18n-placeholder="contact.placeholder.email"
+                               autocomplete="email">
+                        <span class="contact-error" id="err-email"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactSubject">
+                            <span data-i18n="contact.label.subject">Asunto</span>
+                            <span style="color:#e74c3c;"> *</span>
+                        </label>
+                        <input type="text" id="contactSubject" class="form-input"
+                               placeholder="¿Sobre qué quieres contactarnos?"
+                               data-i18n-placeholder="contact.placeholder.subject">
+                        <span class="contact-error" id="err-subject"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactMessage">
+                            <span data-i18n="contact.label.message">Mensaje</span>
+                            <span style="color:#e74c3c;"> *</span>
+                        </label>
+                        <textarea id="contactMessage" class="form-input" rows="6"
+                                  placeholder="Escribe tu mensaje aquí..."
+                                  data-i18n-placeholder="contact.placeholder.message"></textarea>
+                        <span class="contact-error" id="err-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:400; color:#bdc3c7;">
+                            <input type="checkbox" id="contactTerms" style="width:16px; height:16px; cursor:pointer; accent-color:#00d4ff;">
+                            <span data-i18n-html="contact.terms">Acepto la <a href="#" style="color:#00d4ff;">política de privacidad</a></span>
+                        </label>
+                        <span class="contact-error" id="err-terms"></span>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="btnContactSubmit"
+                            data-i18n="contact.submit"
+                            style="width:100%; margin-top:8px;">
+                        Enviar Mensaje
+                    </button>
+
+                </form>
+
+                <div class="contact-success" id="contactSuccess">
+                    <div style="font-size:2.2rem; margin-bottom:12px;">✅</div>
+                    <p style="font-size:1.1rem;" data-i18n="contact.success.title">Mensaje enviado correctamente.</p>
+                    <p style="font-weight:400; color:#95a5a6; margin-top:6px; font-size:0.9rem;" data-i18n="contact.success.subtitle">Te responderemos en menos de 48 horas.</p>
                 </div>
 
-                <div class="form-group">
-                    <label for="contactMessage"><span data-i18n="contact.label.message">Mensaje</span> <span style="color:#e74c3c;">*</span></label>
-                    <textarea id="contactMessage" class="form-input" rows="5" placeholder="Escribe tu mensaje aquí..." data-i18n-placeholder="contact.placeholder.message"></textarea>
-                    <span class="contact-error" id="err-message"></span>
-                </div>
-
-                <div class="form-group">
-                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:400; color:#bdc3c7;">
-                        <input type="checkbox" id="contactTerms" style="width:16px; height:16px; cursor:pointer;">
-                        <span data-i18n-html="contact.terms">Acepto la <a href="#" style="color:#00d4ff;">política de privacidad</a></span>
-                    </label>
-                    <span class="contact-error" id="err-terms"></span>
-                </div>
-
-                <button type="submit" class="btn-primary" id="btnContactSubmit" data-i18n="contact.submit" style="width:100%; margin-top:5px;">Enviar Mensaje</button>
-            </form>
-
-            <div class="contact-success" id="contactSuccess">
-                <div style="font-size:2rem; margin-bottom:10px;">✅</div>
-                <p style="font-size:1.1rem;" data-i18n="contact.success.title">Mensaje enviado correctamente.</p>
-                <p style="font-weight:400; color:#95a5a6; margin-top:5px; font-size:0.9rem;" data-i18n="contact.success.subtitle">Te responderemos en menos de 48 horas.</p>
             </div>
-        </div>
 
-        <div class="contact-info">
-            <div class="contact-info-card">
-                <div class="ci-icon">📧</div>
-                <h4>Email</h4>
-                <p>soporte@game-hub.com</p>
-            </div>
-            <div class="contact-info-card">
-                <div class="ci-icon">💬</div>
-                <h4>Discord</h4>
-                <p>discord.gg/gamehub</p>
-            </div>
-            <div class="contact-info-card">
-                <div class="ci-icon">🐦</div>
-                <h4>Twitter / X</h4>
-                <p>@GameHubOfficial</p>
-            </div>
         </div>
     </div>
 
-    <footer class="main-footer">
-        <p data-i18n="footer.rights">&copy; 2026 Vortex Play & Services Ecosystem. Todos los derechos reservados.</p>
-    </footer>
+    <footer class="main-footer"></footer>
 
     <script src="../js/lang.js"></script>
     <script src="../js/contact.js"></script>

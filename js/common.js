@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     initDatabase();
     injectNavbar();
+    injectFooter();
     setupMobileMenu();
     applyRoleVisibility();
 });
@@ -240,6 +241,7 @@ function injectNavbar() {
                 <a href="news.html" class="navbar-link ${pageName === 'news.html' || pageName.startsWith('news-detail') ? 'active' : ''}" data-i18n="nav.news">Noticias</a>
                 <a href="games.html" class="navbar-link ${pageName === 'games.html' ? 'active' : ''}" data-i18n="nav.catalog">Catálogo</a>
                 <a href="blog.html" class="navbar-link ${pageName === 'blog.html' ? 'active' : ''}" data-i18n="nav.blog">Blog</a>
+                <a href="multimedia.html" class="navbar-link ${pageName === 'multimedia.html' ? 'active' : ''}" data-i18n="nav.multimedia">Multimedia</a>
                 <a href="agenda.html" class="navbar-link ${pageName === 'agenda.html' ? 'active' : ''}" data-i18n="nav.agenda">Agenda</a>
                 <a href="contact.html" class="navbar-link ${pageName === 'contact.html' ? 'active' : ''}" data-i18n="nav.contact">Contacto</a>
                 <button id="langToggleBtn" class="btn-lang-toggle" title="Cambiar idioma">EN</button>
@@ -287,6 +289,35 @@ function getRoleDisplayName(role) {
         'subscriber': 'Suscriptor'
     };
     return roles[role] || 'Invitado';
+}
+
+function injectFooter() {
+    const pageName = window.location.pathname.split('/').pop() || 'index.html';
+    const skipPages = ['login.html', 'auth.html', 'dashboard.html'];
+    if (skipPages.includes(pageName)) return;
+
+    let footerEl = document.querySelector('footer, .main-footer');
+    if (!footerEl) {
+        footerEl = document.createElement('footer');
+        document.body.appendChild(footerEl);
+    }
+    footerEl.className = 'main-footer';
+
+    footerEl.innerHTML = `
+        <div class="footer-inner">
+            <nav class="footer-links" aria-label="Footer">
+                <a href="index.html" data-i18n="nav.home">Inicio</a>
+                <a href="news.html" data-i18n="nav.news">Noticias</a>
+                <a href="games.html" data-i18n="nav.catalog">Catálogo</a>
+                <a href="blog.html" data-i18n="nav.blog">Blog</a>
+                <a href="multimedia.html" data-i18n="nav.multimedia">Multimedia</a>
+                <a href="team.html" data-i18n="nav.team">Equipo</a>
+                <a href="agenda.html" data-i18n="nav.agenda">Agenda</a>
+                <a href="contact.html" data-i18n="nav.contact">Contacto</a>
+            </nav>
+            <p class="footer-copy" data-i18n="footer.rights">&copy; 2026 Vortex Play &amp; Services Ecosystem. Todos los derechos reservados.</p>
+        </div>
+    `;
 }
 
 function applyRoleVisibility() {

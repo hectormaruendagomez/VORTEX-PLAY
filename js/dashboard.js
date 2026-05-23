@@ -8,6 +8,7 @@ let gamesData = [];
 let newsData = [];
 let commentsData = {};
 let userFavorites = {};
+let pendingImageBase64 = null;
 
 function initDashboard() {
     currentUser = getCurrentUser();
@@ -505,14 +506,59 @@ function setupFormListeners() {
     document.getElementById('btnSaveDraft')?.addEventListener('click', function() {
         submitNewsForm('draft');
     });
+
+    const fileInput = document.getElementById('newsImageFile');
+    if (fileInput) {
+        fileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            const label    = document.getElementById('newsImageLabel');
+            const labelTxt = document.getElementById('newsImageLabelText');
+            const preview  = document.getElementById('newsImagePreview');
+            const hint     = document.getElementById('newsImageHint');
+
+            if (!file) {
+                pendingImageBase64 = null;
+                label.classList.remove('has-image');
+                labelTxt.textContent = 'Seleccionar imagen…';
+                preview.style.display = 'none';
+                hint.textContent = 'Opcional · Máx. 1 MB · JPG, PNG, WebP';
+                return;
+            }
+
+            const MAX_BYTES = 1024 * 1024; // 1 MB
+            if (file.size > MAX_BYTES) {
+                alert(`La imagen no debe superar 1 MB. La tuya pesa ${(file.size / 1024 / 1024).toFixed(2)} MB.`);
+                this.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                pendingImageBase64 = e.target.result;
+                preview.style.backgroundImage = `url(${pendingImageBase64})`;
+                preview.style.display = 'block';
+                label.classList.add('has-image');
+                labelTxt.textContent = `${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
+                hint.textContent = '✅ Imagen cargada correctamente.';
+            };
+            reader.readAsDataURL(file);
+        });
+    }
 }
 
+const DEFAULT_GRADIENTS = [
+    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+];
+
 function submitNewsForm(action) {
-    const title = document.getElementById('newsTitle').value.trim();
+    const title    = document.getElementById('newsTitle').value.trim();
     const category = document.getElementById('newsCategory').value;
-    const gradient = document.getElementById('newsImage').value;
-    const excerpt = document.getElementById('newsExcerpt').value.trim();
-    const content = document.getElementById('newsContent').value.trim();
+    const excerpt  = document.getElementById('newsExcerpt').value.trim();
+    const content  = document.getElementById('newsContent').value.trim();
 
     if (!title || !excerpt || !content) {
         alert(t('dash.news_create.required_fields'));
@@ -526,16 +572,21 @@ function submitNewsForm(action) {
         status = currentUser.role === 'collaborator' ? 'pending' : 'published';
     }
 
+    const imageBase64   = pendingImageBase64 || null;
+    const imageGradient = imageBase64 ? null : DEFAULT_GRADIENTS[newsData.length % DEFAULT_GRADIENTS.length];
+
     newsData.push({
         id: newsData.length > 0 ? Math.max(...newsData.map(n => n.id)) + 1 : 1,
         title, category, excerpt, content,
         date: new Date().toLocaleDateString(currentLang === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
         author: currentUser.name,
-        imageGradient: gradient,
+        imageBase64,
+        imageGradient,
         status,
         views: 0
     });
 
+    pendingImageBase64 = null;
     saveDataToStorage();
 
     if (status === 'pending') {
@@ -547,6 +598,16 @@ function submitNewsForm(action) {
     }
 
     document.getElementById('newsCreateForm').reset();
+
+    const label    = document.getElementById('newsImageLabel');
+    const labelTxt = document.getElementById('newsImageLabelText');
+    const preview  = document.getElementById('newsImagePreview');
+    const hint     = document.getElementById('newsImageHint');
+    if (label)    label.classList.remove('has-image');
+    if (labelTxt) labelTxt.textContent = 'Seleccionar imagen…';
+    if (preview)  preview.style.display = 'none';
+    if (hint)     hint.textContent = 'Opcional · Máx. 1 MB · JPG, PNG, WebP';
+
     loadNewsManageSection();
     loadGeneralDashboard();
     document.querySelector('[data-section="dashboard"]').click();

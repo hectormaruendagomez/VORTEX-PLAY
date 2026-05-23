@@ -42,8 +42,12 @@ function renderNews() {
 
         const viewsDisplay = news.views >= 1000 ? `${(news.views / 1000).toFixed(1)}K` : news.views;
 
+        const bgStyle = news.imageBase64
+            ? `background-image:url(${news.imageBase64});background-size:cover;background-position:center;`
+            : `background:${news.imageGradient || 'linear-gradient(135deg, #09091e, #151535)'};`;
+
         article.innerHTML = `
-            <div class="article-image" style="background: ${news.imageGradient || 'linear-gradient(135deg, #09091e, #151535)'};"></div>
+            <div class="article-image" style="${bgStyle}"></div>
             <div class="article-content">
                 <span class="article-category">${getCategoryIcon(news.category)} ${translateCategory(news.category)}</span>
                 <h2 class="article-title">${news.title}</h2>

@@ -82,8 +82,13 @@
             document.getElementById('articleAuthor').textContent = `✍️ ${currentArticle.author}`;
             document.getElementById('articleViews').textContent = `👁️ ${currentArticle.views} vistas`;
 
-            if (currentArticle.imageGradient) {
-                document.getElementById('articleImage').style.background = currentArticle.imageGradient;
+            const imgEl = document.getElementById('articleImage');
+            if (currentArticle.imageBase64) {
+                imgEl.style.backgroundImage  = `url(${currentArticle.imageBase64})`;
+                imgEl.style.backgroundSize   = 'cover';
+                imgEl.style.backgroundPosition = 'center';
+            } else if (currentArticle.imageGradient) {
+                imgEl.style.background = currentArticle.imageGradient;
             }
 
             const contentDiv = document.getElementById('articleContent');

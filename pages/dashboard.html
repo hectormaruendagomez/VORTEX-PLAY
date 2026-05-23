@@ -151,14 +151,13 @@
                             </select>
                         </div>
                         <div class="form-group" style="flex: 1; min-width: 200px;">
-                            <label for="newsImage">Fondo Visual</label>
-                            <select id="newsImage" class="filter-select" style="background: rgba(10,10,25,0.8); border: 1px solid rgba(0,212,255,0.2); height: 44px;" required>
-                                <option value="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">Lila Profundo</option>
-                                <option value="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">Rosa Eléctrico</option>
-                                <option value="linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">Cian Neón</option>
-                                <option value="linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">Verde Esmeralda</option>
-                                <option value="linear-gradient(135deg, #fa709a 0%, #fee140 100%)">Naranja Fuego</option>
-                            </select>
+                            <label>Imagen de portada</label>
+                            <label class="news-image-upload-label" id="newsImageLabel" for="newsImageFile">
+                                <span>📁</span><span id="newsImageLabelText">Seleccionar imagen…</span>
+                            </label>
+                            <input type="file" id="newsImageFile" accept="image/*" style="display:none;">
+                            <div class="news-image-preview" id="newsImagePreview"></div>
+                            <small id="newsImageHint" style="display:block; margin-top:6px; color:#7f8c8d; font-size:0.78rem;">Opcional · Máx. 1 MB · JPG, PNG, WebP</small>
                         </div>
                     </div>
                     <div class="form-group">
