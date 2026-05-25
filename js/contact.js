@@ -84,17 +84,25 @@ function clearContactErrors() {
     });
 }
 
-function submitContactForm() {
+async function submitContactForm() {
     const btn = document.getElementById('btnContactSubmit');
-    btn.disabled = true;
+    btn.disabled    = true;
     btn.textContent = t('contact.sending');
 
-    setTimeout(function() {
-        document.getElementById('contactForm').style.display = 'none';
-        const successEl = document.getElementById('contactSuccess');
-        successEl.style.display = 'block';
-        successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 800);
+    const formData = new FormData();
+    formData.append('nombre',  document.getElementById('contactName').value.trim());
+    formData.append('email',   document.getElementById('contactEmail').value.trim());
+    formData.append('asunto',  document.getElementById('contactSubject').value.trim());
+    formData.append('mensaje', document.getElementById('contactMessage').value.trim());
+
+    try {
+        await fetch(API + 'contacto.php', { method: 'POST', body: formData });
+    } catch {}
+
+    document.getElementById('contactForm').style.display = 'none';
+    const successEl = document.getElementById('contactSuccess');
+    successEl.style.display = 'block';
+    successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function setupRealtimeContactValidation() {

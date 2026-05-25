@@ -6,10 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function setupAuthToggle() {
-    const loginToggle = document.getElementById('loginToggle');
+    const loginToggle    = document.getElementById('loginToggle');
     const registerToggle = document.getElementById('registerToggle');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
+    const loginForm      = document.getElementById('loginForm');
+    const registerForm   = document.getElementById('registerForm');
 
     loginToggle.addEventListener('click', function() {
         loginForm.classList.add('active');
@@ -26,136 +26,142 @@ function setupAuthToggle() {
     });
 }
 
-function checkExistingSession() {
-    if (localStorage.getItem('currentUser')) {
-        window.location.href = 'dashboard.html';
-    }
+async function checkExistingSession() {
+    try {
+        const res  = await fetch(API + 'session_check.php');
+        const data = await res.json();
+        if (data.ok && data.user) {
+            localStorage.setItem('currentUser', JSON.stringify(data.user));
+            window.location.href = 'dashboard.html';
+        }
+    } catch {}
 }
 
 function setupFormValidation() {
-    const loginForm = document.getElementById('loginForm');
+    const loginForm    = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
 
-    loginForm.addEventListener('submit', function(e) {
+    // ── Login ──────────────────────────────────────────────────
+    loginForm.addEventListener('submit', async function(e) {
         e.preventDefault();
-        const emailInput = document.getElementById('loginEmail');
+        const emailInput    = document.getElementById('loginEmail');
         const passwordInput = document.getElementById('loginPassword');
-        const email = emailInput.value.trim().toLowerCase();
-        const password = passwordInput.value;
+        const email         = emailInput.value.trim().toLowerCase();
+        const password      = passwordInput.value;
 
         clearErrors(loginForm);
 
         let valid = true;
         if (!email) {
-            showInputError(emailInput, t('auth.error.email_required'));
-            valid = false;
+            showInputError(emailInput, t('auth.error.email_required')); valid = false;
         } else if (!isValidEmail(email)) {
-            showInputError(emailInput, t('auth.error.email_invalid'));
-            valid = false;
+            showInputError(emailInput, t('auth.error.email_invalid')); valid = false;
         }
         if (!password) {
-            showInputError(passwordInput, t('auth.error.password_required'));
-            valid = false;
+            showInputError(passwordInput, t('auth.error.password_required')); valid = false;
         }
         if (!valid) return;
 
-        const users = JSON.parse(localStorage.getItem('usersData')) || [];
-        const user = users.find(u => u.email.toLowerCase() === email && u.password === password);
+        const btn = loginForm.querySelector('.btn-submit');
+        btn.disabled = true;
 
-        if (user) {
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            alert(`${t('auth.success.welcome')}, ${user.name}.`);
-            window.location.href = 'dashboard.html';
-        } else {
-            showInputError(emailInput, t('auth.error.credentials'));
-            showInputError(passwordInput, t('auth.error.credentials_hint'));
+        try {
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('password', password);
+
+            const res  = await fetch(API + 'login.php', { method: 'POST', body: formData });
+            const data = await res.json();
+
+            if (data.ok) {
+                localStorage.setItem('currentUser', JSON.stringify(data.user));
+                alert(`${t('auth.success.welcome')}, ${data.user.name}.`);
+                window.location.href = 'dashboard.html';
+            } else {
+                showInputError(emailInput, data.message);
+                showInputError(passwordInput, t('auth.error.credentials_hint'));
+            }
+        } catch {
+            showInputError(emailInput, 'Error de conexión. ¿Está XAMPP activo?');
+        } finally {
+            btn.disabled = false;
         }
     });
 
+    // ── Indicador de fuerza de contraseña ─────────────────────
     const passwordInput = document.getElementById('registerPassword');
     if (passwordInput) {
         passwordInput.addEventListener('input', function() {
             const strength = getPasswordStrength(this.value);
-            let hint = this.nextElementSibling;
+            const hint     = this.nextElementSibling;
             if (!hint || !hint.classList.contains('error-msg')) return;
             if (this.value.length === 0) {
                 hint.textContent = '';
                 hint.style.display = 'none';
-                hint.style.color = '#e74c3c';
                 return;
             }
             hint.style.display = 'block';
             if (strength === 'weak') {
-                hint.textContent = t('auth.error.password_weak');
-                hint.style.color = '#e74c3c';
+                hint.textContent = t('auth.error.password_weak');   hint.style.color = '#e74c3c';
             } else if (strength === 'medium') {
-                hint.textContent = t('auth.error.password_medium');
-                hint.style.color = '#f1c40f';
+                hint.textContent = t('auth.error.password_medium'); hint.style.color = '#f1c40f';
             } else {
-                hint.textContent = t('auth.error.password_strong');
-                hint.style.color = '#2ecc71';
+                hint.textContent = t('auth.error.password_strong'); hint.style.color = '#2ecc71';
             }
         });
     }
 
-    registerForm.addEventListener('submit', function(e) {
+    // ── Registro ──────────────────────────────────────────────
+    registerForm.addEventListener('submit', async function(e) {
         e.preventDefault();
-        const nameInput = document.getElementById('registerName');
-        const emailInput = document.getElementById('registerEmail');
-        const passInput = document.getElementById('registerPassword');
+        const nameInput    = document.getElementById('registerName');
+        const emailInput   = document.getElementById('registerEmail');
+        const passInput    = document.getElementById('registerPassword');
         const confirmInput = document.getElementById('registerConfirm');
-        const roleSelect = document.getElementById('registerRole');
+        const roleSelect   = document.getElementById('registerRole');
 
-        const name = nameInput.value.trim();
-        const email = emailInput.value.trim().toLowerCase();
+        const name     = nameInput.value.trim();
+        const email    = emailInput.value.trim().toLowerCase();
         const password = passInput.value;
-        const confirm = confirmInput.value;
-        const role = roleSelect.value;
+        const confirm  = confirmInput.value;
+        const role     = roleSelect.value;
 
         clearErrors(registerForm);
 
         let valid = true;
-        if (!name || name.length < 2) {
-            showInputError(nameInput, t('auth.error.name_short'));
-            valid = false;
-        }
-        if (!email) {
-            showInputError(emailInput, t('auth.error.email_required'));
-            valid = false;
-        } else if (!isValidEmail(email)) {
-            showInputError(emailInput, t('auth.error.email_invalid_ex'));
-            valid = false;
-        }
-        if (password.length < 8) {
-            showInputError(passInput, t('auth.error.password_min'));
-            valid = false;
-        }
-        if (password !== confirm) {
-            showInputError(confirmInput, t('auth.error.passwords_mismatch'));
-            valid = false;
-        }
+        if (!name || name.length < 2)  { showInputError(nameInput,    t('auth.error.name_short'));          valid = false; }
+        if (!email)                     { showInputError(emailInput,   t('auth.error.email_required'));      valid = false; }
+        else if (!isValidEmail(email))  { showInputError(emailInput,   t('auth.error.email_invalid_ex'));    valid = false; }
+        if (password.length < 8)        { showInputError(passInput,    t('auth.error.password_min'));        valid = false; }
+        if (password !== confirm)       { showInputError(confirmInput, t('auth.error.passwords_mismatch'));  valid = false; }
         if (!valid) return;
 
-        const users = JSON.parse(localStorage.getItem('usersData')) || [];
-        if (users.some(u => u.email.toLowerCase() === email)) {
-            showInputError(emailInput, t('auth.error.email_taken'));
-            return;
+        const btn = registerForm.querySelector('.btn-submit');
+        btn.disabled = true;
+
+        try {
+            const formData = new FormData();
+            formData.append('nombre_usuario', name);
+            formData.append('email', email);
+            formData.append('password', password);
+            formData.append('role', role);
+
+            const res  = await fetch(API + 'registro.php', { method: 'POST', body: formData });
+            const data = await res.json();
+
+            if (data.ok) {
+                alert(t('auth.success.register'));
+                registerForm.reset();
+                document.getElementById('loginToggle').click();
+                document.getElementById('loginEmail').value = email;
+            } else {
+                showInputError(emailInput, data.message);
+            }
+        } catch {
+            showInputError(nameInput, 'Error de conexión. ¿Está XAMPP activo?');
+        } finally {
+            btn.disabled = false;
         }
-
-        const settings = JSON.parse(localStorage.getItem('platformSettings')) || { allowRegistration: true };
-        if (!settings.allowRegistration) {
-            alert(t('auth.error.reg_disabled'));
-            return;
-        }
-
-        const avatar = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-        users.push({ email, password, name, role, avatar: avatar || 'US' });
-        localStorage.setItem('usersData', JSON.stringify(users));
-
-        alert(t('auth.success.register'));
-        registerForm.reset();
-        document.getElementById('loginToggle').click();
-        document.getElementById('loginEmail').value = email;
     });
 
     setupRealtimeValidation(loginForm);
@@ -170,7 +176,7 @@ function getPasswordStrength(password) {
     if (password.length < 8) return 'weak';
     const hasNumber = /\d/.test(password);
     const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    const hasUpper = /[A-Z]/.test(password);
+    const hasUpper  = /[A-Z]/.test(password);
     if (hasNumber && (hasSymbol || hasUpper)) return 'strong';
     return 'medium';
 }
@@ -178,11 +184,7 @@ function getPasswordStrength(password) {
 function setupRealtimeValidation(form) {
     form.querySelectorAll('input[required], select[required]').forEach(input => {
         input.addEventListener('blur', function() {
-            if (!this.value.trim()) {
-                this.style.borderColor = '#e74c3c';
-            } else {
-                this.style.borderColor = 'rgba(0, 212, 255, 0.4)';
-            }
+            this.style.borderColor = this.value.trim() ? 'rgba(0, 212, 255, 0.4)' : '#e74c3c';
         });
         input.addEventListener('input', function() {
             if (this.value.trim()) {
@@ -198,21 +200,21 @@ function setupRealtimeValidation(form) {
 }
 
 function setupQuickLogin() {
-    const cards = document.querySelectorAll('.quick-login-card');
-    const emailInput = document.getElementById('loginEmail');
+    const cards         = document.querySelectorAll('.quick-login-card');
+    const emailInput    = document.getElementById('loginEmail');
     const passwordInput = document.getElementById('loginPassword');
-    const loginForm = document.getElementById('loginForm');
+    const loginForm     = document.getElementById('loginForm');
 
     cards.forEach(card => {
         card.addEventListener('click', function() {
-            emailInput.value = this.getAttribute('data-email');
+            emailInput.value    = this.getAttribute('data-email');
             passwordInput.value = this.getAttribute('data-password');
 
-            this.style.transform = 'scale(0.95)';
+            this.style.transform  = 'scale(0.95)';
             this.style.background = 'rgba(0, 212, 255, 0.2)';
 
             setTimeout(() => {
-                this.style.transform = '';
+                this.style.transform  = '';
                 this.style.background = '';
                 loginForm.dispatchEvent(new Event('submit'));
             }, 300);
@@ -222,10 +224,10 @@ function setupQuickLogin() {
 
 function showInputError(inputElement, message) {
     inputElement.style.borderColor = '#e74c3c';
-    inputElement.style.boxShadow = '0 0 10px rgba(230, 76, 60, 0.3)';
+    inputElement.style.boxShadow   = '0 0 10px rgba(230, 76, 60, 0.3)';
     const errorSpan = inputElement.nextElementSibling;
     if (errorSpan && errorSpan.classList.contains('error-msg')) {
-        errorSpan.textContent = message;
+        errorSpan.textContent  = message;
         errorSpan.style.display = 'block';
     }
 }
@@ -233,10 +235,10 @@ function showInputError(inputElement, message) {
 function clearErrors(formElement) {
     formElement.querySelectorAll('input, select').forEach(input => {
         input.style.borderColor = '';
-        input.style.boxShadow = '';
+        input.style.boxShadow   = '';
     });
     formElement.querySelectorAll('.error-msg').forEach(msg => {
-        msg.textContent = '';
+        msg.textContent  = '';
         msg.style.display = 'none';
     });
 }

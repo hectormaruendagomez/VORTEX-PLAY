@@ -3,11 +3,18 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('translationsApplied', renderNews);
 });
 
-let newsList = [];
+let newsList      = [];
 let currentCategory = 'all';
 
-function initNewsPage() {
-    newsList = JSON.parse(localStorage.getItem('newsData')) || [];
+async function initNewsPage() {
+    try {
+        const res  = await fetch(API + 'noticias.php?tipo=Noticia&estado=published');
+        const data = await res.json();
+        newsList   = data.ok ? data.data : [];
+    } catch {
+        newsList = [];
+    }
+
     renderNews();
     renderTrending();
     setupCategoryEvents();
@@ -25,26 +32,21 @@ function renderNews() {
 
     if (visible.length === 0) {
         newsGrid.innerHTML = `
-            <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 40px; color: #bdc3c7;">
-                <h3>${t('news.empty.title')}</h3>
-                <p>${t('news.empty.hint')}</p>
-            </div>
-        `;
+            <div class="no-results" style="grid-column:1/-1;text-align:center;padding:40px;color:#bdc3c7;">
+                <h3>${t('news.empty.title')}</h3><p>${t('news.empty.hint')}</p>
+            </div>`;
         return;
     }
 
     newsGrid.innerHTML = '';
 
     visible.forEach((news, index) => {
-        const article = document.createElement('article');
+        const article    = document.createElement('article');
         const isFeatured = index === 0 && currentCategory === 'all';
         article.className = isFeatured ? 'news-article featured' : 'news-article';
 
         const viewsDisplay = news.views >= 1000 ? `${(news.views / 1000).toFixed(1)}K` : news.views;
-
-        const bgStyle = news.imageBase64
-            ? `background-image:url(${news.imageBase64});background-size:cover;background-position:center;`
-            : `background:${news.imageGradient || 'linear-gradient(135deg, #09091e, #151535)'};`;
+        const bgStyle      = `background:${news.imageGradient || 'linear-gradient(135deg, #09091e, #151535)'};`;
 
         article.innerHTML = `
             <div class="article-image" style="${bgStyle}"></div>
@@ -74,10 +76,9 @@ function renderTrending() {
         .slice(0, 3);
 
     trendingList.innerHTML = '';
-
     top3.forEach((trend, index) => {
-        const item = document.createElement('a');
-        item.href = `news-detail.html?id=${trend.id}`;
+        const item  = document.createElement('a');
+        item.href   = `news-detail.html?id=${trend.id}`;
         item.className = 'trending-item';
         item.innerHTML = `
             <span class="trend-count">${index + 1}</span>
@@ -89,7 +90,6 @@ function renderTrending() {
 
 function setupCategoryEvents() {
     const links = document.querySelectorAll('.category-link');
-
     links.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -103,34 +103,20 @@ function setupCategoryEvents() {
 
 function getCategoryIcon(category) {
     const icons = {
-        'esports': '🏆',
-        'tecnología': '🚀',
-        'tecnologia': '🚀',
-        'lanzamientos': '🎮',
-        'tendencias': '📈',
-        'plataformas': '☁️',
-        'streaming': '🎥',
-        'technology': '🚀',
-        'launches': '🎮',
-        'trends': '📈',
-        'platforms': '☁️'
+        'esports': '🏆', 'tecnología': '🚀', 'tecnologia': '🚀',
+        'lanzamientos': '🎮', 'tendencias': '📈', 'plataformas': '☁️', 'streaming': '🎥',
+        'technology': '🚀', 'launches': '🎮', 'trends': '📈', 'platforms': '☁️',
     };
     return icons[category.toLowerCase()] || '📰';
 }
 
 function translateCategory(category) {
     const map = {
-        'esports': 'news.cat.esports',
-        'tecnología': 'news.cat.tech',
-        'tecnologia': 'news.cat.tech',
-        'lanzamientos': 'news.cat.launches',
-        'tendencias': 'news.cat.trends',
-        'plataformas': 'news.cat.platforms',
-        'streaming': 'news.cat.streaming',
-        'technology': 'news.cat.tech',
-        'launches': 'news.cat.launches',
-        'trends': 'news.cat.trends',
-        'platforms': 'news.cat.platforms'
+        'esports': 'news.cat.esports', 'tecnología': 'news.cat.tech', 'tecnologia': 'news.cat.tech',
+        'lanzamientos': 'news.cat.launches', 'tendencias': 'news.cat.trends',
+        'plataformas': 'news.cat.platforms', 'streaming': 'news.cat.streaming',
+        'technology': 'news.cat.tech', 'launches': 'news.cat.launches',
+        'trends': 'news.cat.trends', 'platforms': 'news.cat.platforms',
     };
     const key = map[category.toLowerCase()];
     return t(key) || category;
