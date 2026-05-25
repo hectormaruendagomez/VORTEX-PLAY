@@ -128,12 +128,12 @@ CREATE TABLE eventos (
 
 -- 5.1. Usuarios de prueba (Contraseñas reales y personalizadas en formato BCRYPT)
 INSERT INTO usuarios (nombre_usuario, email, password, rol, fecha_registro, estado) VALUES
-('admin_carlos', 'carlos@gamehub.com', '$2y$10$bC8g7B3VdBvK9y8x7w6v5uE3M6R2Yy1vK6vK6vK6vK6vK6vK6vK6m', 'Administrador', '2026-05-01', 'Activo'),
-('redactor_hector', 'hector@gamehub.com', '$2y$10$pD9h8C4WeCwL0z9y8x7w6uF4N7S3Zz2vK6vK6vK6vK6vK6vK6vK6q', 'Redactor', '2026-05-02', 'Activo'),
-('colaborador_conesa', 'conesa@gamehub.com', '$2y$10$fA6e5A1TzAtI7w6v5u4t3uC1K4P0Ww9vK6vK6vK6vK6vK6vK6vK6j', 'Colaborador', '2026-05-05', 'Activo'),
-('suscriptor_pepe', 'pepe@gamehub.com', '$2y$10$mZ3b2X8QsQrE4t3s2r1q0uA8H1M7Tt6vK6vK6vK6vK6vK6vK6vK6a', 'Suscriptor', '2026-05-03', 'Activo'),
-('suscriptor_pacotony', 'pacotony@gamehub.com', '$2y$10$mZ3b2X8QsQrE4t3s2r1q0uA8H1M7Tt6vK6vK6vK6vK6vK6vK6vK6a', 'Suscriptor', '2026-05-04', 'Activo'),
-('suscriptor_profe', 'profe@gamehub.com', '$2y$10$xY2a1W7PpPqD3s2r1q0p9tZ7G0L6Ss5vK6vK6vK6vK6vK6vK6vK6b', 'Suscriptor', '2026-05-26', 'Activo');
+('admin_carlos', 'carlos@gamehub.com', '$2y$12$5ZDFsnWPo4.t34Mmp90AqOsTA0XKh/ya3CVwbsKrKJUo0Ob2yLmW2', 'Administrador', '2026-05-01', 'Activo'),
+('redactor_hector', 'hector@gamehub.com', '$2y$12$IedNHXyzvxH.UUyJUa9keelIeQOoiKK8qcB4h/2Perp7.fxmT457S', 'Redactor', '2026-05-02', 'Activo'),
+('colaborador_conesa', 'conesa@gamehub.com', '$2y$12$aMTTW11HGhlXRR4Jg.D2fuU4O9wG6tWcA928EvCZPIZTT.ACM5YTq', 'Colaborador', '2026-05-05', 'Activo'),
+('suscriptor_pepe', 'pepe@gamehub.com', '$2y$12$7X12.kLsr8Jy/HlihN6uxus3gU43eU1OI8Dd7ku3iNx3/neKshT4e', 'Suscriptor', '2026-05-03', 'Activo'),
+('suscriptor_pacotony', 'pacotony@gamehub.com', '$2y$12$7X12.kLsr8Jy/HlihN6uxus3gU43eU1OI8Dd7ku3iNx3/neKshT4e', 'Suscriptor', '2026-05-04', 'Activo'),
+('suscriptor_profe', 'profe@gamehub.com', '$2y$12$4E.eu0GEtrx5/c1eeKMGHOP9WRHp3K.qXRkVo2iYOJRx79FyRElXO', 'Suscriptor', '2026-05-26', 'Activo');
 -- Las contraseñas de los administradores son 'admin', de los redactores 'redactor', de los colaboradores 'colaborador', de los subscriptores 'subscriptor', y de los 
 -- Contraseña del usuario del profesor es 'profe'
 
