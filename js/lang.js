@@ -54,11 +54,11 @@ const translations = {
         'index.subtitle': 'Plataforma web de videojuegos: noticias, rankings y comunidad',
         'index.read_more': 'Leer más →',
 
-        'index.news1.badge': '📰 Esports',
-        'index.news1.title': 'Gran evento de eSports 2026 confirma récord de participantes',
+        'index.news1.badge': '📰 Noticias',
+        'index.news1.title': 'Posible nuevo retraso de GTA VI',
         'index.news1.date': '21 de mayo de 2026',
-        'index.news1.category': 'Esports',
-        'index.news1.body': '5 millones en premios, más de 50 países y expectativas de superar los 100 millones de espectadores. Las clasificatorias han arrancado con una competencia histórica.',
+        'index.news1.category': 'Noticias',
+        'index.news1.body': 'Muchas fuentes indican que el desarrollo de GTA VI ha enfrentado desafíos técnicos y logísticos que podrían retrasar su lanzamiento hasta 2027.',
 
         'index.news2.badge': '🚀 Tecnología',
         'index.news2.title': 'Nuevo motor gráfico revolucionario lanzado',
@@ -428,10 +428,10 @@ const translations = {
         'index.read_more': 'Read more →',
 
         'index.news1.badge': '📰 Esports',
-        'index.news1.title': 'Major 2026 eSports event confirms record attendance',
+        'index.news1.title': 'Possible new delay for GTA VI',
         'index.news1.date': 'May 21, 2026',
-        'index.news1.category': 'Esports',
-        'index.news1.body': '5 million in prizes, over 50 countries and expectations of surpassing 100 million viewers. Qualifiers have kicked off with historic competition.',
+        'index.news1.category': 'Noticias',
+        'index.news1.body': 'Many sources indicate that the development of GTA VI has faced technical and logistical challenges that could delay its release until 2027.',
 
         'index.news2.badge': '🚀 Technology',
         'index.news2.title': 'New revolutionary graphics engine launched',
